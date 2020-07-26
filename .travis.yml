@@ -18,15 +18,28 @@ script:
   - hugo -v --gc --minify
   - echo 'andornot.xyz' > public/CNAME
 
-deploy:
-  provider: pages
-  local-dir: public
-  skip-cleanup: true
-  github-token: $GH_TOKEN
-  keep-history: true
-  on:
-    branch: master
+# deploy:
+#   provider: pages
+#   local-dir: public
+#   skip-cleanup: true
+#   github-token: $GH_TOKEN
+#   keep-history: true
+#   on:
+#     branch: master
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "igaozp"   #修改成自己的github用户名
+  - git config user.email "igaozp@hotmail.com"   #修改成自己的GitHub邮箱
+  - git add .
+  - git commit -m "Build by Travis-CI"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master #GH_token就是在travis中设置的token
 
 branches:
   only:
   - next
+
+env:
+    global:
+        - GH_REF: github.com/igaozp/igaozp.github.io.git
