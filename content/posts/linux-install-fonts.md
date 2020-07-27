@@ -1,6 +1,6 @@
 ---
 title: "Linux 字体极简安装教程"
-date: 2020-07-25T12:05:10+08:00
+date: 2017-07-25T12:05:10+08:00
 draft: false
 tags: ["Linux", "Font"]
 ---
