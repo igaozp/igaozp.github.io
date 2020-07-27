@@ -1,6 +1,6 @@
 ---
 title: "Linux 开启 TCP BBR 拥塞控制算法"
-date: 2020-07-25T12:05:10+08:00
+date: 2018-10-22T12:05:10+08:00
 draft: false
 tags: ["Linux", "TCP"]
 ---
