@@ -1,6 +1,6 @@
 ---
 title: "Linux 常用命令简记"
-date: 2020-07-25T12:05:10+08:00
+date: 2018-09-13T12:05:10+08:00
 draft: false
 tags: ["Linux", "Bash", "Shell"]
 ---
