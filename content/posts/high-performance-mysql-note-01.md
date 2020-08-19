@@ -1,6 +1,6 @@
 ---
-title: "高性能 MySQL 读书笔记之架构和历史"
-date: 2020-08-019T21:25:10+08:00
+title: "高性能 MySQL 读书笔记 - 架构和历史"
+date: 2020-08-19T21:25:10+08:00
 draft: false
 tags: ["MySQL", "DB"]
 ---
