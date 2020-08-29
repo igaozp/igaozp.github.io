@@ -4,12 +4,12 @@ matrix:
       node_js:
         - 14
   
-      before_install:
-        - curl -o- -L https://yarnpkg.com/install.sh | bash
-        - export PATH="$HOME/.yarn/bin:$PATH"
+#       before_install:
+#         - curl -o- -L https://yarnpkg.com/install.sh | bash
+#         - export PATH="$HOME/.yarn/bin:$PATH"
       
       before_script:
-        - yarn add -D @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
+        - npm install --dev @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
 
     - language: go
       dist: trusty
