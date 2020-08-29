@@ -3,5 +3,8 @@
   "version": "2.0.0",
   "main": "index.js",
   "author": "Radosław Kozieł <@panr> <radoslaw.koziel@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Not need test\" && exit 0"
+  }
 }
