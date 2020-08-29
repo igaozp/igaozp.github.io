@@ -1,42 +1,43 @@
-language: go
+matrix:
+  include:
+    - languages: node_js
+      node_js:
+        - 14
+  
+      before_install:
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
+        - export PATH="$HOME/.yarn/bin:$PATH"
+      
+      before_script:
+        - yarn add -D @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
 
-dist: trusty
+    - language: go
+      dist: trusty
+      sudo: false
+      install: true
+      before_script:
+        - wget https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb
+        - sudo dpkg -i hugo_0.74.3_Linux-64bit.deb
+        - rm -rf public || exit 0
+      
+      script:
+        - hugo -v --gc --minify
+        - echo 'andornot.xyz' > public/CNAME
+      
+      after_script:
+        - cd ./public
+        - git init
+        - git config user.name "igaozp"   #修改成自己的github用户名
+        - git config user.email "igaozp@hotmail.com"   #修改成自己的GitHub邮箱
+        - git add .
+        - git commit -m "Build by Travis-CI"
+        - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master #GH_token就是在travis中设置的token
 
-sudo: false
+      branches:
+        only:
+          - next
 
-install: true
+      env:
+          global:
+              - GH_REF: github.com/igaozp/igaozp.github.io.git
 
-before_script:
-  - wget https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb
-  - sudo dpkg -i hugo_0.74.3_Linux-64bit.deb
-  - rm -rf public || exit 0
-
-script:
-  - hugo -v --gc --minify
-  - echo 'andornot.xyz' > public/CNAME
-
-# deploy:
-#   provider: pages
-#   local-dir: public
-#   skip-cleanup: true
-#   github-token: $GH_TOKEN
-#   keep-history: true
-#   on:
-#     branch: master
-
-after_script:
-  - cd ./public
-  - git init
-  - git config user.name "igaozp"   #修改成自己的github用户名
-  - git config user.email "igaozp@hotmail.com"   #修改成自己的GitHub邮箱
-  - git add .
-  - git commit -m "Build by Travis-CI"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master #GH_token就是在travis中设置的token
-
-branches:
-  only:
-  - next
-
-env:
-    global:
-        - GH_REF: github.com/igaozp/igaozp.github.io.git
