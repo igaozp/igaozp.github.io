@@ -1,19 +1,13 @@
-matrix:
+jobs:
   include:
-    - languages: node_js
+    - language: node_js
       node_js:
         - 14
-  
-#       before_install:
-#         - curl -o- -L https://yarnpkg.com/install.sh | bash
-#         - export PATH="$HOME/.yarn/bin:$PATH"
-      
+ 
       before_script:
         - npm install --dev @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
 
     - language: go
-      dist: trusty
-      sudo: false
       install: true
       before_script:
         - wget https://github.com/gohugoio/hugo/releases/download/v0.74.3/hugo_0.74.3_Linux-64bit.deb
