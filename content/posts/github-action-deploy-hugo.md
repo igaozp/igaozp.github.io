@@ -11,6 +11,8 @@ tags: ["GitHub Actions", "Hugo", "CI/CD"]
 
 在 `GitHub Actions` 配置使用多个构建步骤，前几个步骤用来实现多个语言框架环境的准备，后面的步骤完成应用的构建，最后完成应用的发布。
 
+<!--more-->
+
 下面 `GitHub Actions` 工作流程实现 `Hugo` 页面构建的详细配置文件：
 
 ```yml
