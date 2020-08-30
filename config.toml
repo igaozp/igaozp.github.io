@@ -29,14 +29,14 @@ paginate = 5
 
   # Show full page content in RSS feed items
   #(default is Description or Summary metadata in the front matter)
-  # rssFullText = true
+  rssFullText = true
 
 [languages]
   [languages.en]
     title = "AnDorN0T"
     subtitle = "凡是过往，皆为序章"
     keywords = ""
-    copyright = ""
+    copyright = "andornot.xyz"
     menuMore = "Show more"
     writtenBy = "Written by"
     readMore = "Read more"
@@ -47,7 +47,7 @@ paginate = 5
     dateFormatSingle = "2006-01-02"
     dateFormatList = "2006-01-02"
     # leave empty to disable, enter display text to enable
-    # lastModDisplay = ""
+    lastModDisplay = "Modified:"
 
     [languages.en.params.logo]
       logoText = "AnDorN0T"
