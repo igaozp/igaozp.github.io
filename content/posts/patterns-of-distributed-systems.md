@@ -108,7 +108,7 @@ Quorum 机制可以确保我们有足够的数据副本在一部分服务器故�
 
 为了提供耐久性保证，使用 Write-Ahead Log。使用 Segmented Log 将 Write Ahead Log 分成多个片段。这有助于日志清理，而日志清理由 Low-Water Mark 处理。通过在多个服务器上复制 Write-Ahead Log 来提供容错。服务器之间的复制是通过使用 Leader 和 Followers 来管理的。Quorum 用于更新 High-Water Mark，以决定哪些值对客户端可见。通过使用 [Singular Update Queue](https://martinfowler.com/articles/patterns-of-distributed-systems/singular-update-queue.html)，所有的请求都以严格的顺序进行处理。在使用 [Single Socket Channel](https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html) 从 Leader 向 Followers 发送请求时，顺序是保持的。为了优化 [Single Socket Channel](https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html) 的吞吐量和延迟，使用了 [Request Pipeline](https://martinfowler.com/articles/patterns-of-distributed-systems/request-pipeline.html)。Followers 通过从 Leader 收到的心跳检测了解 Leader 的可用性。如果 Leader 因为网络分区而暂时与集群断开连接，则会通过使用 [Generation Clock](https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html) 来检测。
 
-![Replicated WAL](https://andornot.xyz/Replicated WAL.png)
+![Replicated WAL](https://andornot.xyz/Replicated-WAL.png)
 
 这样，从一般形式上理解问题以及其通用的解决方案，有助于理解构建一个完整的系统。
 
