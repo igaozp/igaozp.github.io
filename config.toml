@@ -63,6 +63,10 @@ paginate = 5
         name = "Wiki"
         url = "https://wiki.andornot.xyz"
       [[languages.en.menu.main]]
+        identifier = "knowledge"
+        name = "Knowledge"
+        url = "https://vaiina.com"
+      [[languages.en.menu.main]]
         identifier = "showcase"
         name = "Showcase"
         url = "/showcase"
