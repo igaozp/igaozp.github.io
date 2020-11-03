@@ -58,24 +58,24 @@ paginate = 5
         identifier = "about"
         name = "About"
         url = "/about"
-        weight = -4
+        weight = 4
       [[languages.en.menu.main]]
         identifier = "wiki"
         name = "Wiki"
         url = "https://wiki.andornot.xyz"
-        weight = -2
+        weight = 2
       [[languages.en.menu.main]]
         identifier = "knowledge"
         name = "Knowledge"
         url = "https://vaiina.com"
-        weight = -3
+        weight = 3
       [[languages.en.menu.main]]
         identifier = "showcase"
         name = "Showcase"
         url = "/showcase"
-        weight = -5
+        weight = 5
       [[languages.en.menu.main]]
         identifier = "archive"
         name = "Archive"
         url = "/archive"
-        weight =  -1
+        weight =  1
