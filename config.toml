@@ -78,4 +78,4 @@ paginate = 5
         identifier = "archive"
         name = "Archive"
         url = "/archive"
-        weight =  1
+        weight = 1
