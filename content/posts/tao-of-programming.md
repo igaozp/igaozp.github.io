@@ -2,7 +2,7 @@
 title: "《编程之道》 (Tao of Programming) 十三则"
 date: 2020-11-30T20:27:10+08:00
 draft: false
-tags: ["Tao", "stargazed"]
+tags: ["Tao"]
 ---
 
 《编程之道》 (Tao of Programming) 十三则「精选」
