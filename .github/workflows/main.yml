@@ -21,14 +21,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-#       - name: Setup Node.js environment
-#         uses: actions/setup-node@v1.4.3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.4
       
       - name: Setup Go environment
         uses: actions/setup-go@v2.1.2
       
       - name: Hugo setup
-        uses: peaceiris/actions-hugo@v2.4.12
+        uses: peaceiris/actions-hugo@v2.4.13
     
       - name: Install Dependencies
         run: npm install --dev @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
