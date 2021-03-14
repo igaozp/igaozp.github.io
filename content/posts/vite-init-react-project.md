@@ -28,4 +28,7 @@ npm install -g vite
 npm init @vitejs/app basic --template react
 ```
 
-使用 Vite 顺利完成 React 项目的初始化，完。
+使用 Vite 顺利完成 React 项目的初始化，但运行项目时遇到了 esbuild 执行文件丢失的情况导致无法启动项目，可能是使用 npm 镜像下载依赖导致的，
+可以使用 node 手动执行 `\node_modules\esbuild` 中的 install.js 来下载 esbuild 的可执行文件，随后项目可正常启动。
+
+完。
