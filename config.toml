@@ -56,27 +56,22 @@ paginate = 5
     [languages.en.menu]
       [[languages.en.menu.main]]
         identifier = "about"
-        name = "About"
+        name = "关于"
         url = "/about"
         weight = 4
       [[languages.en.menu.main]]
-        identifier = "wiki"
-        name = "Wiki"
-        url = "https://wiki.andornot.xyz"
-        weight = 2
-      [[languages.en.menu.main]]
         identifier = "knowledge"
         name = "Knowledge"
-        url = "https://vaiina.com"
+        url = "https://okcomputer.wiki"
         weight = 3
       [[languages.en.menu.main]]
         identifier = "showcase"
-        name = "Showcase"
+        name = "展示"
         url = "/showcase"
         weight = 5
       [[languages.en.menu.main]]
         identifier = "archive"
-        name = "Archive"
+        name = "归档"
         url = "/archive"
         weight = 1
       [[languages.en.menu.main]]
