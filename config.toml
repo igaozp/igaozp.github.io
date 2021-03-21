@@ -37,17 +37,17 @@ paginate = 5
     subtitle = "乌云阻拦明月涌河湾，他起身独立向荒原"
     keywords = ""
     # copyright = "andornot.xyz"
-    menuMore = "Show more"
-    writtenBy = "Written by"
-    readMore = "Read more"
-    readOtherPosts = "Read other posts"
-    newerPosts = "Newer posts"
-    olderPosts = "Older posts"
-    minuteReadingTime = "min read"
+    menuMore = "更多"
+    writtenBy = "作者"
+    readMore = "阅读更多"
+    readOtherPosts = "阅读其他"
+    newerPosts = "稍后的文章"
+    olderPosts = "稍前的文章"
+    minuteReadingTime = "阅读至少需"
     dateFormatSingle = "2006-01-02"
     dateFormatList = "2006-01-02"
     # leave empty to disable, enter display text to enable
-    lastModDisplay = "Modified:"
+    lastModDisplay = "修改于"
 
     [languages.en.params.logo]
       logoText = "AnDorN0T"
@@ -61,7 +61,7 @@ paginate = 5
         weight = 4
       [[languages.en.menu.main]]
         identifier = "knowledge"
-        name = "Knowledge"
+        name = "知识库"
         url = "https://okcomputer.wiki"
         weight = 3
       [[languages.en.menu.main]]
