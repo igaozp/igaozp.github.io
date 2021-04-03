@@ -5,31 +5,31 @@ draft: false
 tags: ["Tao"]
 ---
 
-《编程之道》 (Tao of Programming) 十三则『精选』
+《编程之道》 (Tao of Programming) 十三则「精选」
 
 ## 其一
 The Grand Master Turing once dreamed that he was a machine. When he awoke, he exclaimed:
 "I don't know whether I am Turing dreaming that I am a machine, or a machine dreaming that I am Turing!"
 
 昔日，图灵大师梦见自己变成了一台机器，他醒来后惊呼：
-『我不确定我是图灵梦见自己变成了机器，还是我是机器梦见自己变成了图灵！』
+「我不确定我是图灵梦见自己变成了机器，还是我是机器梦见自己变成了图灵！」
 
 ## 其二
 Thus spake the Master Programmer:
 "When a program is being tested, it is too late to make design changes."
 
-编程大师如是说：『待程序进入测试阶段，任何设计上的修改都太晚了。』
+编程大师如是说：「待程序进入测试阶段，任何设计上的修改都太晚了。」
 
 ## 其三
 There once was a Master Programmer who wrote unstructured programs. A novice programmer, seeking to imitate him, also began to write unstructured programs. When the novice asked the Master to evaluate his progress, the Master criticized him for writing unstructured programs, saying, "What is appropriate for the Master is not appropriate for the novice. You must understand Tao before transcending structure."
 
-从前，有位编程大师擅长编写没有结构的程序。他的弟子模仿他，也开始编写没有结构的程序。当弟子请大师评价他的程序，大师批评他：『适合大师的不一定适合初学者。在超越结构之前，你必须先领悟道。』
+从前，有位编程大师擅长编写没有结构的程序。他的弟子模仿他，也开始编写没有结构的程序。当弟子请大师评价他的程序，大师批评他：「适合大师的不一定适合初学者。在超越结构之前，你必须先领悟道。」
 
 ## 其四
 Thus spake the Master Programmer:
 "A well-written program is its own Heaven; a poorly-written program is its own Hell."
 
-编程大师如是说：『优秀的程仿佛置身天堂，差劲的程序如同自取灭亡。』
+编程大师如是说：「优秀的程仿佛置身天堂，差劲的程序如同自取灭亡。」
 
 ## 其五
 A program should be light and agile, its subroutines connected like a string of pearls. The spirit and intent of the program should be retained throughout. There should be neither too little nor too much. Neither needless loops nor useless variables; neither lack of structure nor overwhelming rigidity.
@@ -38,7 +38,7 @@ A program should be light and agile, its subroutines connected like a string of 
 
 A program should follow the "Law of Least Astonishment". What is this law? It is simply that the program should always respond to the users in the way that least astonishes them.
 
-程序应当遵循『最少惊讶原则』。这个原则很简单：程序返回的结果永远符合用户的预期。
+程序应当遵循「最少惊讶原则」。这个原则很简单：程序返回的结果永远符合用户的预期。
 
 A program, no matter how complex, should act as a single unit. The program should be directed by the logic within rather than by outward appearances.
 
@@ -115,13 +115,13 @@ Thus spake the Master Programmer:
 "Without the wind, the grass does not move. Without software hardware is useless."
 
 编程大师如是说：
-『没有风，草就不会动；没有软件，硬件就没用。』
+「没有风，草就不会动；没有软件，硬件就没用。」
 
 ## 其十三
 Hardware met Software on the road to Changtse. Software said: "You are Yin and I am Yang. If we travel together, we will become famous and earn vast sums of money." And so they set forth together, thinking to conquer the world.
 
-在通往长江的路上，硬件和软件相遇了。软件说：『你是阴，我是阳。我们结伴而行，日后一定会出名、赚大钱。』于是他们一同出发，想要征服世界。
+在通往长江的路上，硬件和软件相遇了。软件说：「你是阴，我是阳。我们结伴而行，日后一定会出名、赚大钱。」于是他们一同出发，想要征服世界。
 
 Presently, they met Firmware, who was dressed in tattered rags and hobbled along propped on a thorny stick. Firmware said to them: "The Tao lies beyond Yin and Yang. It is silent and still as a pool of water. It does not seek fame; therefore, nobody knows its presence. It does not seek fortune, for it is complete within itself. It exists beyond space and time."
 
-不久，他们碰见了固件。固件衣衫褴褛，拄着一根拐杖，步履蹒跚地走着。固件对他们说：『道在阴阳之外。它似一潭止水，寂静无声。它不求闻达，所以没人知道它在哪儿。它不求财富，因为它自身已完整无缺。它独立于时空存在。』
+不久，他们碰见了固件。固件衣衫褴褛，拄着一根拐杖，步履蹒跚地走着。固件对他们说：「道在阴阳之外。它似一潭止水，寂静无声。它不求闻达，所以没人知道它在哪儿。它不求财富，因为它自身已完整无缺。它独立于时空存在。」
