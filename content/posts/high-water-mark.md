@@ -1,12 +1,12 @@
 ---
-title: "【译】分布式系统中的模式：High-Water Mark"
+title: "[译] 分布式系统中的模式：High-Water Mark"
 date: 2021-03-06T11:01:10+08:00
 draft: false
 tags: ["分布式系统", "翻译"]
 ---
 
 该文章翻译自 Martin Fowler 官方网站上的系列文章，原文链接 [Patterns of Distributed Systems](https://martinfowler.com/articles/patterns-of-distributed-systems/)，
-此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用『模式』，这些『模式』对我们普通开发者了解学习分布式系统有很好的指导意义。
+此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用「模式」，这些「模式」对我们普通开发者了解学习分布式系统有很好的指导意义。
 
 本篇文章原作者介绍了分布式系统中的 High-Water Mark 相关的概念及一些场景，
 原文链接 [High-Water Mark](https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html) 。
@@ -162,4 +162,4 @@ Leader 失效：
 
 - 所有的共识算法都使用高水位标记的概念来知道何时应用所提出的状态突变，例如在 RAFT 共识算法中，高水位标记被称为 "CommitIndex"。
 - 在 Kafka 复制协议中，维护了一个单独的索引，称为 "high-water mark"。消费者只能看到高水位标记之前的条目。
-- Apache BookKeeper 有一个『[最后一次添加确认](https://bookkeeper.apache.org/archives/docs/r4.4.0/bookkeeperProtocol.html)』的概念，即在 Quorum 的法定人数上成功复制的条目。
+- Apache BookKeeper 有一个「[最后一次添加确认](https://bookkeeper.apache.org/archives/docs/r4.4.0/bookkeeperProtocol.html)」的概念，即在 Quorum 的法定人数上成功复制的条目。
