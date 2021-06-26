@@ -15,7 +15,7 @@ paginate = 5
   contentTypeName = "posts"
 
   # "light" or "dark"
-  defaultTheme = "dark"
+  defaultTheme = "light"
 
   # if you set this to 0, only submenu trigger will be visible
   showMenuItems = 2
@@ -39,15 +39,15 @@ paginate = 5
     # copyright = "andornot.xyz"
     menuMore = "更多"
     writtenBy = "作者"
-    readMore = "阅读更多"
-    readOtherPosts = "阅读其他"
+    readMore = "更多"
+    readOtherPosts = "其他"
     newerPosts = "稍后的文章"
-    olderPosts = "稍前的文章"
-    minuteReadingTime = "阅读至少需"
+    olderPosts = "稍早的文章"
+    minuteReadingTime = "阅读需"
     dateFormatSingle = "2006-01-02"
     dateFormatList = "2006-01-02"
     # leave empty to disable, enter display text to enable
-    lastModDisplay = "修改于"
+    lastModDisplay = "更新于"
 
     [languages.en.params.logo]
       logoText = "AnDorN0T"
