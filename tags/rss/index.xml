@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RSS on AnDorN0T</title><link>https://andornot.xyz/tags/rss/</link><description>Recent content in RSS on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 09 Jan 2021 10:57:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/rss/index.xml" rel="self" type="application/rss+xml"/><item><title>寻找「隐藏」RSS 订阅地址的方法</title><link>https://andornot.xyz/posts/found-rss-feed/</link><pubDate>Sat, 09 Jan 2021 10:57:10 +0800</pubDate><guid>https://andornot.xyz/posts/found-rss-feed/</guid><description>
+&lt;p>很多博客站点提供了 RSS 订阅的方式，但博客作者并没有显著地标明，或者作者自身并不知道有 RSS 订阅。
+一些静态网站的生成引擎或者主题会自动生成 RSS 订阅，所以我们只需要知道这些订阅源的路由位置即可。&lt;/p>
+&lt;p>下面这几个路由是我操作总结的几个 RSS 订阅源常用位置&lt;/p>
+&lt;pre>&lt;code>/index.xml
+/feed
+/feed.xml
+/rss.xml
+/atom.xml
+&lt;/code>&lt;/pre>&lt;p>使用上面提供的路由地址，可找到大部分站点的 RSS 订阅源，前提是站点提供了 RSS 订阅。&lt;/p></description></item></channel></rss>

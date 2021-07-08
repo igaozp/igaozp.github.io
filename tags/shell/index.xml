@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shell on AnDorN0T</title><link>https://andornot.xyz/tags/shell/</link><description>Recent content in Shell on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 13 Sep 2018 12:05:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 常用命令简记</title><link>https://andornot.xyz/posts/linux-command/</link><pubDate>Thu, 13 Sep 2018 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-command/</guid><description>
+&lt;p>系统信息显示&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">date &lt;span style="color:#75715e"># 当前日期时间 &lt;/span>
+cal &lt;span style="color:#75715e"># 日历&lt;/span>
+uptime &lt;span style="color:#75715e"># 当前更新的时间&lt;/span>
+w &lt;span style="color:#75715e"># 在线用户信息&lt;/span>
+whoami &lt;span style="color:#75715e"># 当前登录用户的用户名&lt;/span>
+finger user &lt;span style="color:#75715e"># 关于user用户的信息&lt;/span>
+uname -a &lt;span style="color:#75715e"># 内核信息 &lt;/span>
+cat /proc/cpuinfo &lt;span style="color:#75715e"># CPU信息&lt;/span>
+cat /proc/meminfo &lt;span style="color:#75715e"># 内存信息&lt;/span>
+man command &lt;span style="color:#75715e"># 查找关于command命令的手册&lt;/span>
+df &lt;span style="color:#75715e"># 磁盘使用情况&lt;/span>
+du &lt;span style="color:#75715e"># 当前目录下文件的空间占用情况&lt;/span>
+free &lt;span style="color:#75715e"># 内存和交换空间的使用情况&lt;/span>
+whereis app &lt;span style="color:#75715e"># app可能出现的位置&lt;/span>
+which app &lt;span style="color:#75715e"># app运行时默认的运行位置&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件解压缩&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">tar cf file.tar files &lt;span style="color:#75715e"># 将files文件夹或文件, 打包为file.tar&lt;/span>
+tar xf file.tar &lt;span style="color:#75715e"># 解压file.tar&lt;/span>
+tar czf file.tar.gz files &lt;span style="color:#75715e"># 使用gzip创建压缩文件file.tar.gz&lt;/span>
+tar xzf file.tar.gz &lt;span style="color:#75715e"># 使用gzip解压file.tar.gz&lt;/span>
+tar cjf file.tar.bz2 &lt;span style="color:#75715e"># 使用bzip2创建压缩文件file.tar.bz2&lt;/span>
+tar xjf file.tar.bz2 &lt;span style="color:#75715e"># 使用bzip2解压file.tar.bz2&lt;/span>
+gzip file &lt;span style="color:#75715e"># 将file文件压缩并重命名为file.gz&lt;/span>
+gzip -d file.gz &lt;span style="color:#75715e"># 解压缩file.gz&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>进程管理&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ps &lt;span style="color:#75715e"># 显示当前活动进程&lt;/span>
+top &lt;span style="color:#75715e"># 显示所有运行中的进程&lt;/span>
+kill pid &lt;span style="color:#75715e"># 终止ID为pid的进程&lt;/span>
+killall proc &lt;span style="color:#75715e"># 终止所有名为proc*的进程&lt;/span>
+bg &lt;span style="color:#75715e"># 列出已终止或后台运行的进程&lt;/span>
+fg &lt;span style="color:#75715e"># 将最近的后台任务调至前台&lt;/span>
+fg n &lt;span style="color:#75715e"># 将任务n调至前台&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>网络相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ping host &lt;span style="color:#75715e"># ping主机地址并显示结果&lt;/span>
+whois domain &lt;span style="color:#75715e"># 获取domain域名的whois信息&lt;/span>
+dig domain &lt;span style="color:#75715e"># 获取domain域名的DNS信息&lt;/span>
+dig -x host &lt;span style="color:#75715e"># 反向查询host主机&lt;/span>
+wget file &lt;span style="color:#75715e"># 下载文件&lt;/span>
+wget -c file &lt;span style="color:#75715e"># 继续已停止的下载&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>安装软件&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;span style="color:#75715e"># 从源码安装软件&lt;/span>
+./configure
+make
+make install
+dpkg -i pkg.deb &lt;span style="color:#75715e"># 安装deb格式的软件包&lt;/span>
+rpm -Uvh pkg.rpm &lt;span style="color:#75715e"># 安装rpm格式的软件包&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>搜索相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">grep pattern files &lt;span style="color:#75715e"># 查找匹配pattern模式的文件&lt;/span>
+grep -r pattern dir &lt;span style="color:#75715e"># 在目录下递归查找匹配pattern模式&lt;/span>
+command | grep pattern &lt;span style="color:#75715e"># 在command命令的输出中查找匹配pattern的信息&lt;/span>
+locate file &lt;span style="color:#75715e"># 查找file文件的所有实例&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件权限&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">chmod octal file &lt;span style="color:#75715e"># 为文件设置octal数字所代表的权限&lt;/span>
+chmod &lt;span style="color:#ae81ff">777&lt;/span> file &lt;span style="color:#75715e"># 所有人可以完全控制file文件&lt;/span>
+chmod &lt;span style="color:#ae81ff">755&lt;/span> &lt;span style="color:#75715e"># 文件创建者可以完全控制file文件, 组内成员和其他人只能读取和执行&lt;/span>
+4:读取&lt;span style="color:#f92672">(&lt;/span>r&lt;span style="color:#f92672">)&lt;/span>
+2:写入&lt;span style="color:#f92672">(&lt;/span>w&lt;span style="color:#f92672">)&lt;/span>
+1:可执行&lt;span style="color:#f92672">(&lt;/span>x&lt;span style="color:#f92672">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ls &lt;span style="color:#75715e"># 列出目录&lt;/span>
+ls -al &lt;span style="color:#75715e"># 列出所有文件目录的信息&lt;/span>
+cd dir &lt;span style="color:#75715e"># 切换到dir目录下&lt;/span>
+cd &lt;span style="color:#75715e"># 切换到home目录下&lt;/span>
+pwd &lt;span style="color:#75715e"># 显示当前目录&lt;/span>
+mkdir dir &lt;span style="color:#75715e"># 创建目录&lt;/span>
+rm file &lt;span style="color:#75715e"># 删除file文件&lt;/span>
+rm -r dir &lt;span style="color:#75715e"># 删除dir目录下的内容&lt;/span>
+rm -f file &lt;span style="color:#75715e"># 强制删除file文件&lt;/span>
+rm -rf dir &lt;span style="color:#75715e"># 强制删除dir目录下的内容&lt;/span>
+cp file1 file2 &lt;span style="color:#75715e"># 复制文件&lt;/span>
+cp -r dir1 dir2 &lt;span style="color:#75715e"># 复制文件夹&lt;/span>
+mv file1 file2 &lt;span style="color:#75715e"># 重命名文件或移动文件&lt;/span>
+ln -s file link &lt;span style="color:#75715e"># 创建符号连接&lt;/span>
+touch file &lt;span style="color:#75715e"># 创建或更新文件&lt;/span>
+more file &lt;span style="color:#75715e"># 输出文件内容&lt;/span>
+head file &lt;span style="color:#75715e"># 输出文件前10行的内容&lt;/span>
+tail file &lt;span style="color:#75715e"># 输出文件后10行的内容&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

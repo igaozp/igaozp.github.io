@@ -1,0 +1,152 @@
+<!doctype html><html lang=en><head><title>使用 Multimap 对集合按属性进行分组 ::
+AnDorN0T — 乌云阻拦明月涌河湾，他起身独立向荒原</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="问题描述 存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。
+例如有如下的数据列表（省略非关键信息）：
+[ { &amp;#34;id&amp;#34;: 1, &amp;#34;createTime&amp;#34;: &amp;#34;2020-07-23 21:01:23&amp;#34; }, { &amp;#34;id&amp;#34;: 2, &amp;#34;createTime&amp;#34;: &amp;#34;2020-06-23 21:01:23&amp;#34; }, { &amp;#34;id&amp;#34;: 3, &amp;#34;createTime&amp;#34;: &amp;#34;2020-05-23 21:01:23&amp;#34; } ] "><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://andornot.xyz/posts/using-mulitmap-group-collections/><link rel=stylesheet href=https://andornot.xyz/assets/style.css><link rel=stylesheet href=https://andornot.xyz/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=https://andornot.xyz/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=https://andornot.xyz/img/favicon.png><link href=https://andornot.xyz/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=https://andornot.xyz/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=https://andornot.xyz/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=https://andornot.xyz/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=https://andornot.xyz/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=https://andornot.xyz/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="使用 Multimap 对集合按属性进行分组"><meta name=twitter:description content="问题描述
+存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。
+例如有如下的数据列表（省略非关键信息）：
+[
+    {
+        &#34;id&#34;: 1,
+        &#34;createTime&#34;: &#34;2020-07-23 21:01:23&#34;
+    },
+    {
+        &#34;id&#34;: 2,
+        &#34;createTime&#34;: &#34;2020-06-23 21:01:23&#34;
+    },
+    {
+        &#34;id&#34;: 3,
+        &#34;createTime&#34;: &#34;2020-05-23 21:01:23&#34;
+    }
+]
+"><meta property="og:title" content="使用 Multimap 对集合按属性进行分组"><meta property="og:description" content="问题描述
+存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。
+例如有如下的数据列表（省略非关键信息）：
+[
+    {
+        &#34;id&#34;: 1,
+        &#34;createTime&#34;: &#34;2020-07-23 21:01:23&#34;
+    },
+    {
+        &#34;id&#34;: 2,
+        &#34;createTime&#34;: &#34;2020-06-23 21:01:23&#34;
+    },
+    {
+        &#34;id&#34;: 3,
+        &#34;createTime&#34;: &#34;2020-05-23 21:01:23&#34;
+    }
+]
+"><meta property="og:type" content="article"><meta property="og:url" content="https://andornot.xyz/posts/using-mulitmap-group-collections/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-07-25T12:05:10+08:00"><meta property="article:modified_time" content="2020-07-25T12:05:10+08:00"><meta property="og:site_name" content="AnDorN0T"></head><body><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>AnDorN0T</span>
+<span class=logo__cursor></span></a><span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/archive>归档</a></li><li><a href=https://okcomputer.wiki>知识库</a></li><ul class=menu__sub-inner><li class=menu__sub-inner-more-trigger>更多
+<span class=menu__sub-inner-more-trigger-icon><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span></li><ul class="menu__sub-inner-more hidden"><li><a href=/about>关于</a></li><li><a href=/showcase>展示</a></li><li><a href=/index.xml>RSS</a></li></ul></ul></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/archive>归档</a></li><li><a href=https://okcomputer.wiki>知识库</a></li><li><a href=/about>关于</a></li><li><a href=/showcase>展示</a></li><li><a href=/index.xml>RSS</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>使用 Multimap 对集合按属性进行分组</h1><div class=post-meta><span class=post-date>2020-07-25</span></div><span class=post-tags><a href=https://andornot.xyz/tags/java/>#Java</a>&nbsp;
+<a href=https://andornot.xyz/tags/guava/>#Guava</a>&nbsp;</span><div class=post-content><h2 id=问题描述>问题描述</h2><p>存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。</p><p>例如有如下的数据列表（省略非关键信息）：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>[
+    {
+        <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>1</span>,
+        <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-07-23 21:01:23&#34;</span>
+    },
+    {
+        <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>2</span>,
+        <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-06-23 21:01:23&#34;</span>
+    },
+    {
+        <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>3</span>,
+        <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-05-23 21:01:23&#34;</span>
+    }
+]
+</code></pre></div><p>想要根据<code>createTime</code>创建时间的月份，对数据进行分组，得到类似这样的结构：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;JULY&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>1</span>,
+            <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-07-23 21:01:23&#34;</span>
+        }
+    ],
+    <span style=color:#f92672>&#34;JUNE&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>2</span>,
+            <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-06-23 21:01:23&#34;</span>
+        }
+    ],
+    <span style=color:#f92672>&#34;MAY&#34;</span>: [
+        {
+            <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>3</span>,
+            <span style=color:#f92672>&#34;createTime&#34;</span>: <span style=color:#e6db74>&#34;2020-05-23 21:01:23&#34;</span>
+        }
+    ]
+}
+</code></pre></div><h2 id=解决方案>解决方案</h2><p>可以使用 <code>Guava</code> 提供的 <code>Multimap</code> 方便的进行处理，<code>Multimap</code> 可以支持同一个 <code>key</code> 放入多个 <code>value</code>。 因此针对上述场景，将月份数据作为 <code>Map</code> 的 <code>key</code>，每个月份对应的数据元素作为 <code>value</code>，便可得到对应的分组结构。参考代码如下：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> com.google.common.base.Function<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> com.google.common.collect.Multimap<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> com.google.common.collect.Multimaps<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> org.checkerframework.checker.nullness.qual.Nullable<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> java.time.LocalDateTime<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.time.Month<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.ArrayList<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.Collection<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.Collections<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MultimapExample</span> <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Data</span> <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>private</span> Integer id<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>private</span> LocalDateTime createTime<span style=color:#f92672>;</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>Data</span><span style=color:#f92672>(</span>Integer id<span style=color:#f92672>,</span> LocalDateTime createTime<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>id</span> <span style=color:#f92672>=</span> id<span style=color:#f92672>;</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>createTime</span> <span style=color:#f92672>=</span> createTime<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setId</span><span style=color:#f92672>(</span>Integer id<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>id</span> <span style=color:#f92672>=</span> id<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setCreateTime</span><span style=color:#f92672>(</span>LocalDateTime createTime<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>createTime</span> <span style=color:#f92672>=</span> createTime<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>public</span> Integer <span style=color:#a6e22e>getId</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>return</span> id<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#66d9ef>public</span> LocalDateTime <span style=color:#a6e22e>getCreateTime</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>return</span> createTime<span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+
+        <span style=color:#a6e22e>@Override</span>
+        <span style=color:#66d9ef>public</span> String <span style=color:#a6e22e>toString</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+            <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;id: &#34;</span> <span style=color:#f92672>+</span> id <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;, createTime: &#34;</span> <span style=color:#f92672>+</span> createTime <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;\n&#34;</span> <span style=color:#f92672>;</span>
+        <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>
+
+    <span style=color:#75715e>// test with Java 14
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>main</span><span style=color:#f92672>(</span>String<span style=color:#f92672>[]</span> args<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        <span style=color:#75715e>// generate random data
+</span><span style=color:#75715e></span>        Collection<span style=color:#f92672>&lt;</span>Data<span style=color:#f92672>&gt;</span> collection <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;(</span>Collections<span style=color:#f92672>.</span><span style=color:#a6e22e>emptyList</span><span style=color:#f92672>());</span>
+        <span style=color:#66d9ef>for</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> 0<span style=color:#f92672>;</span> i <span style=color:#f92672>&lt;</span> 10<span style=color:#f92672>;</span> i<span style=color:#f92672>++)</span> <span style=color:#f92672>{</span>
+            collection<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span><span style=color:#66d9ef>new</span> Data<span style=color:#f92672>(</span>i<span style=color:#f92672>,</span> LocalDateTime<span style=color:#f92672>.</span><span style=color:#a6e22e>now</span><span style=color:#f92672>().</span><span style=color:#a6e22e>plusMonths</span><span style=color:#f92672>(</span>i<span style=color:#f92672>)));</span>
+        <span style=color:#f92672>}</span>
+        System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>collection<span style=color:#f92672>);</span>
+
+        <span style=color:#75715e>// Data convert to Month function
+</span><span style=color:#75715e></span>        java<span style=color:#f92672>.</span><span style=color:#a6e22e>util</span><span style=color:#f92672>.</span><span style=color:#a6e22e>function</span><span style=color:#f92672>.</span><span style=color:#a6e22e>Function</span><span style=color:#f92672>&lt;</span>Data<span style=color:#f92672>,</span> <span style=color:#a6e22e>@Nullable</span> Month<span style=color:#f92672>&gt;</span> function <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> Function<span style=color:#f92672>&lt;&gt;()</span> <span style=color:#f92672>{</span>
+            <span style=color:#a6e22e>@Nullable</span>
+            <span style=color:#a6e22e>@Override</span>
+            <span style=color:#66d9ef>public</span> Month <span style=color:#a6e22e>apply</span><span style=color:#f92672>(</span><span style=color:#a6e22e>@Nullable</span> Data data<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>data <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+                    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>;</span>
+                <span style=color:#f92672>}</span>
+                <span style=color:#66d9ef>return</span> data<span style=color:#f92672>.</span><span style=color:#a6e22e>getCreateTime</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getMonth</span><span style=color:#f92672>();</span>
+            <span style=color:#f92672>}</span>
+        <span style=color:#f92672>};</span>
+        
+        Multimap<span style=color:#f92672>&lt;</span>Month<span style=color:#f92672>,</span> Data<span style=color:#f92672>&gt;</span> result <span style=color:#f92672>=</span> Multimaps<span style=color:#f92672>.</span><span style=color:#a6e22e>index</span><span style=color:#f92672>(</span>collection<span style=color:#f92672>,</span> function<span style=color:#f92672>::</span>apply<span style=color:#f92672>);</span>
+        System<span style=color:#f92672>.</span><span style=color:#a6e22e>out</span><span style=color:#f92672>.</span><span style=color:#a6e22e>println</span><span style=color:#f92672>(</span>result<span style=color:#f92672>.</span><span style=color:#a6e22e>asMap</span><span style=color:#f92672>());</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>代码中核心的部分，创建了一个 <code>Function</code> 用于获取数据元素对应的分组的元素（输入 <code>Data</code> 数据获取对应的分组月份），使用 <code>Multimaps.index</code> 方法生成分组数据。</p><p>如果想要对生成的分组数据进行展示、输出等操作，需要调用 <code>asMap</code> 方法将 <code>Multimap</code> 转换成朴素的 <code>Java Map</code> 进行展示输出。</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>其他</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://andornot.xyz/posts/high-performance-mysql-note-01/><span class=button__icon>←</span>
+<span class=button__text>高性能 MySQL 读书笔记 - 架构和历史</span></a></span>
+<span class="button next"><a href=https://andornot.xyz/posts/java-reserved-word-var/><span class=button__text>Java 10 局部变量类型推断</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>AnDorN0T</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2021 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=https://andornot.xyz/assets/main.js></script><script src=https://andornot.xyz/assets/prism.js></script></div></body></html>

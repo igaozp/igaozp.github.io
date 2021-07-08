@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Electron on AnDorN0T</title><link>https://andornot.xyz/tags/electron/</link><description>Recent content in Electron on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 05 May 2016 12:05:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/electron/index.xml" rel="self" type="application/rss+xml"/><item><title>Electron 中加载 Chrome 扩展</title><link>https://andornot.xyz/posts/electron-load-chrome-plugin/</link><pubDate>Thu, 05 May 2016 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/electron-load-chrome-plugin/</guid><description>
+&lt;p>在 Electron 的开发过程中可以使用专门为 Chrome 开发的扩展插件，这样可以极大的提高页面 Debug 的效率。接下来看一下如何在 Electron 中启用这些扩展插件。&lt;/p>
+&lt;h2 id="下载扩展插件">下载扩展插件&lt;/h2>
+&lt;p>要想使用这些插件，首先要在自己的 Chrome 浏览器中安装这些插件，然后在 Chrome 的扩展程序页面 &lt;code>chrome://extensions&lt;/code> 下找到刚下载的扩展，每一个扩展都以一个专属的 ID ，记住这个扩展的 ID。&lt;/p>
+&lt;h2 id="查找扩展路径">查找扩展路径&lt;/h2>
+&lt;p>接下来需要找到扩展的在本地磁盘的路径:&lt;/p>
+&lt;ul>
+&lt;li>在 Windows 下 Chrome 扩展的路径一般为 &lt;code>C:\\Users\\username\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\&lt;/code> 或者 &lt;code>%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Extensions&lt;/code>&lt;/li>
+&lt;li>在 Linux 下为 &lt;code>~/.config/google-chrome/Default/Extensions/&lt;/code>&lt;/li>
+&lt;li>在 macOS 下为 &lt;code>~/Library/Application Support/Google/Chrome/Default/Extensions&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>具体的路径可能在不同的系统和软件版本之间有差异，可以自行搜索。然后在目录下找到刚才的 ID 值一样的文件夹，这个文件夹就是扩展的安装路径。&lt;/p>
+&lt;h2 id="加载扩展">加载扩展&lt;/h2>
+&lt;p>在 Electron 中使用 &lt;code>BrowserWindow.addDevToolsExtension(devToolsUrl)&lt;/code> 来加载扩展，&lt;code>devToolsUrl&lt;/code>为扩展的安装路径 。例如加载 Windows 中的 Chrome 扩展 :&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-jsx" data-lang="jsx">&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">devToolsUrl&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;C:\\\\Users\\\\username\\\\AppData\\\\Local\\\\CentBrowser\\\\User Data\\\\Default\\\\Extensions\\\\nhdogjmejiglipccpnnnanhbledajbpd\\\\3.1.2_0&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">createWindow&lt;/span> () {
+&lt;span style="color:#a6e22e">win&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">BrowserWindow&lt;/span>({
+&lt;span style="color:#a6e22e">width&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#ae81ff">800&lt;/span>,
+&lt;span style="color:#a6e22e">height&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#ae81ff">600&lt;/span>,
+})
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">loadURL&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>.&lt;span style="color:#a6e22e">format&lt;/span>({
+&lt;span style="color:#a6e22e">pathname&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>.&lt;span style="color:#a6e22e">join&lt;/span>(&lt;span style="color:#a6e22e">__dirname&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;index.html&amp;#39;&lt;/span>),
+&lt;span style="color:#a6e22e">protocol&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#39;file:&amp;#39;&lt;/span>,
+&lt;span style="color:#a6e22e">slashes&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+}))
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">webContents&lt;/span>.&lt;span style="color:#a6e22e">openDevTools&lt;/span>()
+&lt;span style="color:#75715e">// 加载扩展
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">BrowserWindow&lt;/span>.&lt;span style="color:#a6e22e">addDevToolsExtension&lt;/span>(&lt;span style="color:#a6e22e">devToolsUrl&lt;/span>)
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">on&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;closed&amp;#39;&lt;/span>, () =&amp;gt; {
+&lt;span style="color:#a6e22e">win&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>
+})
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样就可以在 Electron 的开发工具中使用 Chrome 的扩展。&lt;/p>
+&lt;h2 id="其他">其他&lt;/h2>
+&lt;p>现在 Electron 官方只支持部分 Chrome 扩展，具体信息可以查看此&lt;a href="https://electron.atom.io/docs/tutorial/devtools-extension/#supported-devtools-extensions">链接&lt;/a>。&lt;/p></description></item></channel></rss>

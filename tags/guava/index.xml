@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Guava on AnDorN0T</title><link>https://andornot.xyz/tags/guava/</link><description>Recent content in Guava on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 25 Jul 2020 12:05:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/guava/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Multimap 对集合按属性进行分组</title><link>https://andornot.xyz/posts/using-mulitmap-group-collections/</link><pubDate>Sat, 25 Jul 2020 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/using-mulitmap-group-collections/</guid><description>
+&lt;h2 id="问题描述">问题描述&lt;/h2>
+&lt;p>存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。&lt;/p>
+&lt;p>例如有如下的数据列表（省略非关键信息）：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">[
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-07-23 21:01:23&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">2&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-06-23 21:01:23&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">3&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-05-23 21:01:23&amp;#34;&lt;/span>
+}
+]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>想要根据&lt;code>createTime&lt;/code>创建时间的月份，对数据进行分组，得到类似这样的结构：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;JULY&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-07-23 21:01:23&amp;#34;&lt;/span>
+}
+],
+&lt;span style="color:#f92672">&amp;#34;JUNE&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">2&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-06-23 21:01:23&amp;#34;&lt;/span>
+}
+],
+&lt;span style="color:#f92672">&amp;#34;MAY&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">3&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-05-23 21:01:23&amp;#34;&lt;/span>
+}
+]
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>可以使用 &lt;code>Guava&lt;/code> 提供的 &lt;code>Multimap&lt;/code> 方便的进行处理，&lt;code>Multimap&lt;/code> 可以支持同一个 &lt;code>key&lt;/code> 放入多个 &lt;code>value&lt;/code>。 因此针对上述场景，将月份数据作为 &lt;code>Map&lt;/code> 的 &lt;code>key&lt;/code>，每个月份对应的数据元素作为 &lt;code>value&lt;/code>，便可得到对应的分组结构。参考代码如下：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java">&lt;span style="color:#f92672">import&lt;/span> com.google.common.base.Function&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> com.google.common.collect.Multimap&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> com.google.common.collect.Multimaps&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> org.checkerframework.checker.nullness.qual.Nullable&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.time.LocalDateTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.time.Month&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.ArrayList&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.Collection&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.Collections&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">MultimapExample&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Data&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">private&lt;/span> Integer id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">private&lt;/span> LocalDateTime createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">Data&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Integer id&lt;span style="color:#f92672">,&lt;/span> LocalDateTime createTime&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">=&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">createTime&lt;/span> &lt;span style="color:#f92672">=&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setId&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Integer id&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">=&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setCreateTime&lt;/span>&lt;span style="color:#f92672">(&lt;/span>LocalDateTime createTime&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">createTime&lt;/span> &lt;span style="color:#f92672">=&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> Integer &lt;span style="color:#a6e22e">getId&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> LocalDateTime &lt;span style="color:#a6e22e">getCreateTime&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> String &lt;span style="color:#a6e22e">toString&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;id: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> id &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;, createTime: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> createTime &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;\n&amp;#34;&lt;/span> &lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#75715e">// test with Java 14
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>&lt;span style="color:#f92672">(&lt;/span>String&lt;span style="color:#f92672">[]&lt;/span> args&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#75715e">// generate random data
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> Collection&lt;span style="color:#f92672">&amp;lt;&lt;/span>Data&lt;span style="color:#f92672">&amp;gt;&lt;/span> collection &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ArrayList&lt;span style="color:#f92672">&amp;lt;&amp;gt;(&lt;/span>Collections&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">emptyList&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span> i &lt;span style="color:#f92672">&amp;lt;&lt;/span> 10&lt;span style="color:#f92672">;&lt;/span> i&lt;span style="color:#f92672">++)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+collection&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">add&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">new&lt;/span> Data&lt;span style="color:#f92672">(&lt;/span>i&lt;span style="color:#f92672">,&lt;/span> LocalDateTime&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">now&lt;/span>&lt;span style="color:#f92672">().&lt;/span>&lt;span style="color:#a6e22e">plusMonths&lt;/span>&lt;span style="color:#f92672">(&lt;/span>i&lt;span style="color:#f92672">)));&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>collection&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#75715e">// Data convert to Month function
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> java&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">util&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">function&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">Function&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>Data&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#a6e22e">@Nullable&lt;/span> Month&lt;span style="color:#f92672">&amp;gt;&lt;/span> function &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> Function&lt;span style="color:#f92672">&amp;lt;&amp;gt;()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#a6e22e">@Nullable&lt;/span>
+&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> Month &lt;span style="color:#a6e22e">apply&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#a6e22e">@Nullable&lt;/span> Data data&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>data &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> data&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getCreateTime&lt;/span>&lt;span style="color:#f92672">().&lt;/span>&lt;span style="color:#a6e22e">getMonth&lt;/span>&lt;span style="color:#f92672">();&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">};&lt;/span>
+Multimap&lt;span style="color:#f92672">&amp;lt;&lt;/span>Month&lt;span style="color:#f92672">,&lt;/span> Data&lt;span style="color:#f92672">&amp;gt;&lt;/span> result &lt;span style="color:#f92672">=&lt;/span> Multimaps&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">index&lt;/span>&lt;span style="color:#f92672">(&lt;/span>collection&lt;span style="color:#f92672">,&lt;/span> function&lt;span style="color:#f92672">::&lt;/span>apply&lt;span style="color:#f92672">);&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>result&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">asMap&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>代码中核心的部分，创建了一个 &lt;code>Function&lt;/code> 用于获取数据元素对应的分组的元素（输入 &lt;code>Data&lt;/code> 数据获取对应的分组月份），使用 &lt;code>Multimaps.index&lt;/code> 方法生成分组数据。&lt;/p>
+&lt;p>如果想要对生成的分组数据进行展示、输出等操作，需要调用 &lt;code>asMap&lt;/code> 方法将 &lt;code>Multimap&lt;/code> 转换成朴素的 &lt;code>Java Map&lt;/code> 进行展示输出。&lt;/p></description></item></channel></rss>

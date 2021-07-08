@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AnDorN0T</title><link>https://andornot.xyz/</link><description>Recent content on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 07 Jul 2021 20:53:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/index.xml" rel="self" type="application/rss+xml"/><item><title>IDEA 编译大项目报错问题解决</title><link>https://andornot.xyz/posts/idea-java-compile-error-fix/</link><pubDate>Wed, 07 Jul 2021 20:53:10 +0800</pubDate><guid>https://andornot.xyz/posts/idea-java-compile-error-fix/</guid><description>
+&lt;p>最近使用 IDEA 启动 Java 项目时发现在编译阶段出现如下的错误：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>java.lang.OutOfMemoryError: GC overhead limit exceeded&lt;/code>&lt;/li>
+&lt;li>&lt;code>java.lang.InternalError&lt;/code>&lt;/li>
+&lt;li>&lt;code>java.lang.OutOfMemoryError: Java heap space&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>出现上述的错误，通常在项目工程比较大的时候才会出现。此时只需要调整 IDEA 的设置，
+将 &lt;strong>File | Settings | Build, Execution, Deployment | Compiler&lt;/strong> 中的
+&lt;strong>Shared build process heap size(Mbytes)&lt;/strong> 配置的阈值适当提高，问题通常便会解决。&lt;/p></description></item><item><title>使用 JConsole 简单排查死锁线程</title><link>https://andornot.xyz/posts/jconsole-sample-usage/</link><pubDate>Sun, 27 Jun 2021 11:16:10 +0800</pubDate><guid>https://andornot.xyz/posts/jconsole-sample-usage/</guid><description>
+&lt;p>最近在工作中遇到了 HTTP 请求长时间未响应的情况，初步判断是代码问题导致产生死锁，遂简单学习了下 JDK 中自带的 JConsole 工具。
+以 Windows 为例，工具存放在 JDK 目录下的 bin/jconsole.exe，双击运行即可。&lt;/p>
+&lt;p>使用步骤：&lt;/p>
+&lt;ol>
+&lt;li>新建连接，选择本地或远程的应用进程，并连接。&lt;/li>
+&lt;li>切换至线程选项卡。&lt;/li>
+&lt;li>点击左下方的「检测死锁」按钮。如果存在死锁进程，会展示对应的线程信息，同时展示线程死锁相关的堆栈信息，排查堆栈信息即可找到问题根源。&lt;/li>
+&lt;/ol></description></item><item><title>《关于使用 create-react-app 初始化 React 项目屡遭失败愤而投入 Vite 怀抱的那件事》</title><link>https://andornot.xyz/posts/vite-init-react-project/</link><pubDate>Sun, 14 Mar 2021 11:00:10 +0800</pubDate><guid>https://andornot.xyz/posts/vite-init-react-project/</guid><description>
+&lt;p>最近在学习 React 时，最开始使用官方的 create-react-app 工具进行项目的初始化，完成工具的安装后进行项目初始化时遇到了一些问题。&lt;/p>
+&lt;p>使用 crp 创建项目时遇到了关于 node-gyp 的错误，node-gyp 是用来构建跟平台相关的原生模块，在 Windows 下需要额外安装 windows-build-tools 之类
+的工具，安装这些工具需要耗费大量的磁盘空间，遂放弃在 Windows 下使用 crp，进而在 WSL 环境中使用。&lt;/p>
+&lt;p>在 Linux 环境中使用 crp 也需要使用 node-gyp 来进行构建原生模块，只不过是使用的 make 工具，所以安装 make 相关的依赖。本以为能够继续顺利地使用 crp 完成项目地初始化，
+结果遇到了 &lt;code>gyp ERR! stack Error: &lt;/code>make&lt;code> failed with exit code: 2&lt;/code> 及 &lt;code>gyp: Call to 'pkg-config pixman-1 --libs' returned exit status 127 while in binding.gyp. while trying to load binding.gyp&lt;/code> 之类的
+问题，在查找了几种解决方案并尝试之后均无果而终。&lt;/p>
+&lt;p>决定放弃使用 crp 初始化项目寻找其他的替代方案，突然想到 Vite 最近已经更新 2.0 了，看了下相关文档发现除支持生成 Vue 项目外还支持 React 项目。&lt;/p>
+&lt;p>全局安装 Vite 工具&lt;/p>
+&lt;pre>&lt;code>npm install -g vite
+&lt;/code>&lt;/pre>&lt;p>使用相关的模板初始化项目，这里使用 React 项目的模板，basic 可替换为任意的项目名称&lt;/p>
+&lt;pre>&lt;code>npm init @vitejs/app basic --template react
+&lt;/code>&lt;/pre>&lt;p>使用 Vite 顺利完成 React 项目的初始化，但运行项目时遇到了 esbuild 执行文件丢失的情况导致无法启动项目，可能是使用 npm 镜像下载依赖导致的，
+可以使用 node 手动执行 &lt;code>\node_modules\esbuild&lt;/code> 中的 install.js 来下载 esbuild 的可执行文件，随后项目可正常启动。&lt;/p>
+&lt;p>完。&lt;/p></description></item><item><title>npm 修改 registry 配置提高下载速度</title><link>https://andornot.xyz/posts/npm-config-registry/</link><pubDate>Sat, 13 Mar 2021 22:36:10 +0800</pubDate><guid>https://andornot.xyz/posts/npm-config-registry/</guid><description>
+&lt;p>使用如下命令修改全局配置，使用淘宝镜像加速 npm 的下载速度&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">npm config set registry https://registry.npm.taobao.org
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>[译] 分布式系统中的模式：High-Water Mark</title><link>https://andornot.xyz/posts/high-water-mark/</link><pubDate>Sat, 06 Mar 2021 11:01:10 +0800</pubDate><guid>https://andornot.xyz/posts/high-water-mark/</guid><description>
+&lt;p>该文章翻译自 Martin Fowler 官方网站上的系列文章，原文链接 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/">Patterns of Distributed Systems&lt;/a>，
+此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用「模式」，这些「模式」对我们普通开发者了解学习分布式系统有很好的指导意义。&lt;/p>
+&lt;p>本篇文章原作者介绍了分布式系统中的 High-Water Mark 相关的概念及一些场景，
+原文链接 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html">High-Water Mark&lt;/a> 。&lt;/p>
+&lt;p>注：高水位线（High-Water Mark）通常是指投资基金或账户达到的最高价值峰值。
+这个词通常用于基金经理的报酬，而基金经理的报酬是基于业绩的。高水位线确保基金经理不会因为业绩不佳而获得大笔报酬。&lt;/p>
+&lt;h2 id="正文">正文&lt;/h2>
+&lt;blockquote>
+&lt;p>在预写式日志（Write Ahead Log）中，索引展现最新的成功复制的数据。&lt;/p>
+&lt;/blockquote>
+&lt;p>预写式日志（WAL）模式用于恢复服务器崩溃和重启后的服务状态。但在服务器故障时，预写日志还不足以提供可用性。
+如果单个服务器发生故障，那么在服务器重启之前，客户端将无法运转。为了获得一个更可用的系统，我们可以将日志复制到多台服务器上。
+使用 Leader and Followers 模式，Leader 将其所有的日志条目复制到 Followers 上。
+现在如果 Leader 崩溃，可以选出一个新的 Leader，客户端大多可以继续像以前一样使用集群服务。但还是有几个场景会出现问题：&lt;/p>
+&lt;ul>
+&lt;li>Leader 在给任意一个 Follower 发送日志条目之前崩溃。&lt;/li>
+&lt;li>Leader 在向小部分 Follower 发送日志条目之后崩溃，但无法继续将日志发送给大部分 Follower。&lt;/li>
+&lt;/ul>
+&lt;p>在这些出现错误的场景下，有些 Follower 的日志中可能缺少条目，有些 Follower 的日志条目可能比其他 Follower 多。
+所以，对于每个 Follower 来说，知道哪部分的日志是安全的，并可以提供给客户端服务就变得非常重要。&lt;/p>
+&lt;h3 id="解决方案">解决方案&lt;/h3>
+&lt;p>高水位标记（high-water mark）是日志文件中的一个索引，它记录了已知已成功复制到一定数量（符合 Quorum 机制的数量）的 Follower 的最后一个日志条目。
+在复制过程中，Leader 也会将高水位标记传递给它的 Followers。群集中的所有服务器应仅传输或更新低于高水位线标记的数据给客户端。&lt;/p>
+&lt;p>&lt;img src="https://andornot.xyz/patterns-of-distributed-systems/high-water-mark/highwatermark-sequence.png" alt="highwatermark 序列图">&lt;/p>
+&lt;p>对于每个日志条目，Leader 将其附加到其本地的预写日志中，然后将其发送给所有的 Follower。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> &lt;span style="color:#66d9ef">private&lt;/span> Long &lt;span style="color:#a6e22e">appendAndReplicate&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">byte&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> data&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+Long lastLogEntryIndex &lt;span style="color:#f92672">=&lt;/span> appendToLocalLog&lt;span style="color:#f92672">(&lt;/span>data&lt;span style="color:#f92672">);&lt;/span>
+logger&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">info&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Replicating log entries from index &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> lastLogEntryIndex&lt;span style="color:#f92672">);&lt;/span>
+replicateOnFollowers&lt;span style="color:#f92672">(&lt;/span>lastLogEntryIndex&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> lastLogEntryIndex&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">replicateOnFollowers&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Long entryAtIndex&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">final&lt;/span> FollowerHandler follower &lt;span style="color:#f92672">:&lt;/span> followers&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+replicateOn&lt;span style="color:#f92672">(&lt;/span>follower&lt;span style="color:#f92672">,&lt;/span> entryAtIndex&lt;span style="color:#f92672">);&lt;/span> &lt;span style="color:#75715e">//send replication requests to followers
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Follower 处理复制请求，并将日志条目追加到其本地日志中。在成功追加日志条目后，它们会将最新日志条目的索引响应给 Leader。
+响应中还包括服务器当前的 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html">Generation Clock&lt;/a>。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> &lt;span style="color:#66d9ef">private&lt;/span> ReplicationResponse &lt;span style="color:#a6e22e">handleReplicationRequest&lt;/span>&lt;span style="color:#f92672">(&lt;/span>ReplicationRequest replicationRequest&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+List&lt;span style="color:#f92672">&amp;lt;&lt;/span>WALEntry&lt;span style="color:#f92672">&amp;gt;&lt;/span> entries &lt;span style="color:#f92672">=&lt;/span> replicationRequest&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntries&lt;/span>&lt;span style="color:#f92672">();&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>WALEntry entry &lt;span style="color:#f92672">:&lt;/span> entries&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+logger&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">info&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Applying log entry &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntryId&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; in &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> serverId&lt;span style="color:#f92672">());&lt;/span>
+wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">writeEntry&lt;/span>&lt;span style="color:#f92672">(&lt;/span>entry&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ReplicationResponse&lt;span style="color:#f92672">(&lt;/span>SUCCEEDED&lt;span style="color:#f92672">,&lt;/span> serverId&lt;span style="color:#f92672">(),&lt;/span> replicationState&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getGeneration&lt;/span>&lt;span style="color:#f92672">(),&lt;/span> wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getLastLogEntryId&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Leader 在收到响应时，会跟踪复制在每个服务器上的日志索引。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> recordReplicationConfirmedFor&lt;span style="color:#f92672">(&lt;/span>response&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getServerId&lt;/span>&lt;span style="color:#f92672">(),&lt;/span> response&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getReplicatedLogIndex&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#66d9ef">long&lt;/span> logIndexAtQuorum &lt;span style="color:#f92672">=&lt;/span> computeHighwaterMark&lt;span style="color:#f92672">(&lt;/span>logIndexesAtAllServers&lt;span style="color:#f92672">(),&lt;/span> config&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">numberOfServers&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>logIndexAtQuorum &lt;span style="color:#f92672">&amp;gt;&lt;/span> replicationState&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getHighWaterMark&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+var previousHighWaterMark &lt;span style="color:#f92672">=&lt;/span> replicationState&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getHighWaterMark&lt;/span>&lt;span style="color:#f92672">();&lt;/span>
+applyLogAt&lt;span style="color:#f92672">(&lt;/span>previousHighWaterMark&lt;span style="color:#f92672">,&lt;/span> logIndexAtQuorum&lt;span style="color:#f92672">);&lt;/span>
+replicationState&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">setHighWaterMark&lt;/span>&lt;span style="color:#f92672">(&lt;/span>logIndexAtQuorum&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>高水位线可以通过查看 Follower 的日志索引及 Leader 自身的日志来计算，同时选出在多数服务器中都有的日志索引。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> Long &lt;span style="color:#a6e22e">computeHighwaterMark&lt;/span>&lt;span style="color:#f92672">(&lt;/span>List&lt;span style="color:#f92672">&amp;lt;&lt;/span>Long&lt;span style="color:#f92672">&amp;gt;&lt;/span> serverLogIndexes&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> noOfServers&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+serverLogIndexes&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">sort&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Long&lt;span style="color:#f92672">::&lt;/span>compareTo&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> serverLogIndexes&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">get&lt;/span>&lt;span style="color:#f92672">(&lt;/span>noOfServers &lt;span style="color:#f92672">/&lt;/span> 2&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>在 Leader 选举中会出现一个微妙的问题。在任何服务器向客户端发送数据之前，我们必须确保集群中的所有服务器都有一个最新的日志记录。
+这个微妙的问题就是，在向所有的 Follower 传播高水位线之前现有的 Leader 失效。RAFT 的做法是在 Leader 选举成功后，在 Leader 的日志中附加一个 no-op 条目，并且只有在其 Follower 确认这一点后才能为客户端提供服务。在 ZAB 中，新的 Leader 在尝试开始为客户提供服务之前，将其所有条目推送给所有的 Follower。&lt;/p>
+&lt;p>Leader 将高水位线作为常规心跳检测的一部分或作为单独的请求传播给 Followers。然后，Follower 据此设定他们的高水位线。&lt;/p>
+&lt;p>任何客户端都只能读取高水位线前日志条目。超过高水位线的日志条目对客户端来说是不可见的，因为没有确认这些条目是否被复制，
+所以如果 Leader 失效，而其他服务器被选为 Leader，这些日志条目可能无法使用。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> &lt;span style="color:#66d9ef">public&lt;/span> WALEntry &lt;span style="color:#a6e22e">readEntry&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">long&lt;/span> index&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>index &lt;span style="color:#f92672">&amp;gt;&lt;/span> replicationState&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getHighWaterMark&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> IllegalArgumentException&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Log entry not available&amp;#34;&lt;/span>&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">readAt&lt;/span>&lt;span style="color:#f92672">(&lt;/span>index&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="日志截断">日志截断&lt;/h3>
+&lt;p>当一台服务器在崩溃/重启后加入集群时，其日志中总有可能出现一些冲突的条目。因此，每当一台服务器加入集群时，
+它都会与集群的 Leader 进行检查，以了解日志中哪些条目可能是冲突的。然后，它将日志截断到与 Leader 相匹配的条目，
+然后用随后的条目更新日志，以确保它的日志与集群的其他条目相匹配。&lt;/p>
+&lt;p>考虑下面的例子。客户端发送请求在日志中添加四个条目。Leader 成功复制了三个条目，但在向自己的日志中添加 Entry4 之后失效。
+其中一个 Follower 被选为新的 Leader，并从客户端接收到了更多的条目。当失效的 Leader 再次加入集群时，它的 Entry4 是冲突的。所以它需要截断自己的日志，直到 Entry3，然后添加 Entry5，使日志与集群的其他部分相匹配。&lt;/p>
+&lt;p>Leader 失效：
+&lt;img src="https://andornot.xyz/patterns-of-distributed-systems/high-water-mark/leaderfailure.png" alt="Leader 失效">&lt;/p>
+&lt;p>新 Leader：
+&lt;img src="https://andornot.xyz/patterns-of-distributed-systems/high-water-mark/newleader.png" alt="新 Leader">&lt;/p>
+&lt;p>日志截断：
+&lt;img src="https://andornot.xyz/patterns-of-distributed-systems/high-water-mark/truncation.png" alt="截断">&lt;/p>
+&lt;p>任何在暂停后重新启动或重新加入集群的服务器都会找到新的 Leader。然后，它明确询问当前的高水位线，将自己的日志截断到高水位线，
+然后从 Leader 那里得到高水位线以外的所有条目。RAFT 等复制算法有办法通过检查自己日志中的日志条目与请求中的日志条目，
+找出冲突的条目，将日志索引相同但生成时钟较低的条目删除。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> &lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">maybeTruncate&lt;/span>&lt;span style="color:#f92672">(&lt;/span>ReplicationRequest replicationRequest&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#66d9ef">throws&lt;/span> IOException &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>replicationRequest&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">hasNoEntries&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">||&lt;/span> wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">isEmpty&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span>&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+List&lt;span style="color:#f92672">&amp;lt;&lt;/span>WALEntry&lt;span style="color:#f92672">&amp;gt;&lt;/span> entries &lt;span style="color:#f92672">=&lt;/span> replicationRequest&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntries&lt;/span>&lt;span style="color:#f92672">();&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>WALEntry entry &lt;span style="color:#f92672">:&lt;/span> entries&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getLastLogEntryId&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> entry&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntryId&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>entry&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getGeneration&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">==&lt;/span> wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">readAt&lt;/span>&lt;span style="color:#f92672">(&lt;/span>entry&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntryId&lt;/span>&lt;span style="color:#f92672">()).&lt;/span>&lt;span style="color:#a6e22e">getGeneration&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">continue&lt;/span>&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+wal&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">truncate&lt;/span>&lt;span style="color:#f92672">(&lt;/span>entry&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getEntryId&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>支持日志截断的一个简单的实现是保存一个日志索引和文件位置的 MAP。然后可以在给定的索引处对日志进行截断，如下所示：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java"> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">truncate&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Long logIndex&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#66d9ef">throws&lt;/span> IOException &lt;span style="color:#f92672">{&lt;/span>
+var filePosition &lt;span style="color:#f92672">=&lt;/span> entryOffsets&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">get&lt;/span>&lt;span style="color:#f92672">(&lt;/span>logIndex&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>filePosition &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#66d9ef">throw&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> IllegalArgumentException&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;No file position available for logIndex=&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> logIndex&lt;span style="color:#f92672">);&lt;/span>
+fileChannel&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">truncate&lt;/span>&lt;span style="color:#f92672">(&lt;/span>filePosition&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实际的应用示例">实际的应用示例&lt;/h3>
+&lt;ul>
+&lt;li>所有的共识算法都使用高水位标记的概念来知道何时应用所提出的状态突变，例如在 RAFT 共识算法中，高水位标记被称为 &amp;ldquo;CommitIndex&amp;rdquo;。&lt;/li>
+&lt;li>在 Kafka 复制协议中，维护了一个单独的索引，称为 &amp;ldquo;high-water mark&amp;rdquo;。消费者只能看到高水位标记之前的条目。&lt;/li>
+&lt;li>Apache BookKeeper 有一个「&lt;a href="https://bookkeeper.apache.org/archives/docs/r4.4.0/bookkeeperProtocol.html">最后一次添加确认&lt;/a>」的概念，即在 Quorum 的法定人数上成功复制的条目。&lt;/li>
+&lt;/ul></description></item><item><title>寻找「隐藏」RSS 订阅地址的方法</title><link>https://andornot.xyz/posts/found-rss-feed/</link><pubDate>Sat, 09 Jan 2021 10:57:10 +0800</pubDate><guid>https://andornot.xyz/posts/found-rss-feed/</guid><description>
+&lt;p>很多博客站点提供了 RSS 订阅的方式，但博客作者并没有显著地标明，或者作者自身并不知道有 RSS 订阅。
+一些静态网站的生成引擎或者主题会自动生成 RSS 订阅，所以我们只需要知道这些订阅源的路由位置即可。&lt;/p>
+&lt;p>下面这几个路由是我操作总结的几个 RSS 订阅源常用位置&lt;/p>
+&lt;pre>&lt;code>/index.xml
+/feed
+/feed.xml
+/rss.xml
+/atom.xml
+&lt;/code>&lt;/pre>&lt;p>使用上面提供的路由地址，可找到大部分站点的 RSS 订阅源，前提是站点提供了 RSS 订阅。&lt;/p></description></item><item><title>《编程之道》 (Tao of Programming) 十三则</title><link>https://andornot.xyz/posts/tao-of-programming/</link><pubDate>Mon, 30 Nov 2020 20:27:10 +0800</pubDate><guid>https://andornot.xyz/posts/tao-of-programming/</guid><description>
+&lt;p>《编程之道》 (Tao of Programming) 十三则「精选」&lt;/p>
+&lt;h2 id="其一">其一&lt;/h2>
+&lt;p>The Grand Master Turing once dreamed that he was a machine. When he awoke, he exclaimed:
+&amp;ldquo;I don&amp;rsquo;t know whether I am Turing dreaming that I am a machine, or a machine dreaming that I am Turing!&amp;rdquo;&lt;/p>
+&lt;p>昔日，图灵大师梦见自己变成了一台机器，他醒来后惊呼：
+「我不确定我是图灵梦见自己变成了机器，还是我是机器梦见自己变成了图灵！」&lt;/p>
+&lt;h2 id="其二">其二&lt;/h2>
+&lt;p>Thus spake the Master Programmer:
+&amp;ldquo;When a program is being tested, it is too late to make design changes.&amp;rdquo;&lt;/p>
+&lt;p>编程大师如是说：「待程序进入测试阶段，任何设计上的修改都太晚了。」&lt;/p>
+&lt;h2 id="其三">其三&lt;/h2>
+&lt;p>There once was a Master Programmer who wrote unstructured programs. A novice programmer, seeking to imitate him, also began to write unstructured programs. When the novice asked the Master to evaluate his progress, the Master criticized him for writing unstructured programs, saying, &amp;ldquo;What is appropriate for the Master is not appropriate for the novice. You must understand Tao before transcending structure.&amp;rdquo;&lt;/p>
+&lt;p>从前，有位编程大师擅长编写没有结构的程序。他的弟子模仿他，也开始编写没有结构的程序。当弟子请大师评价他的程序，大师批评他：「适合大师的不一定适合初学者。在超越结构之前，你必须先领悟道。」&lt;/p>
+&lt;h2 id="其四">其四&lt;/h2>
+&lt;p>Thus spake the Master Programmer:
+&amp;ldquo;A well-written program is its own Heaven; a poorly-written program is its own Hell.&amp;rdquo;&lt;/p>
+&lt;p>编程大师如是说：「优秀的程仿佛置身天堂，差劲的程序如同自取灭亡。」&lt;/p>
+&lt;h2 id="其五">其五&lt;/h2>
+&lt;p>A program should be light and agile, its subroutines connected like a string of pearls. The spirit and intent of the program should be retained throughout. There should be neither too little nor too much. Neither needless loops nor useless variables; neither lack of structure nor overwhelming rigidity.&lt;/p>
+&lt;p>程序应当轻巧灵活，内部的子过程彼此连接，串若珍珠。程序的精神和目的，当一以贯之。代码量要恰到好处，减一行则少，增一行则多。不存在多余的循环或变量。既不失整体结构，也不至僵化死板。&lt;/p>
+&lt;p>A program should follow the &amp;ldquo;Law of Least Astonishment&amp;rdquo;. What is this law? It is simply that the program should always respond to the users in the way that least astonishes them.&lt;/p>
+&lt;p>程序应当遵循「最少惊讶原则」。这个原则很简单：程序返回的结果永远符合用户的预期。&lt;/p>
+&lt;p>A program, no matter how complex, should act as a single unit. The program should be directed by the logic within rather than by outward appearances.&lt;/p>
+&lt;p>无论程序多么复杂，都可当作一个独立单元来运行。程序应靠内在逻辑指导，而不为前端形式左右。&lt;/p>
+&lt;p>If the program fails in these requirements, it will be in a state of disorder and confusion. The only way to correct this is to rewrite the program.&lt;/p>
+&lt;p>如果程序不满足以上要求，它将陷入无序与混乱。唯一的修复办法就是重写程序。&lt;/p>
+&lt;h2 id="其六">其六&lt;/h2>
+&lt;p>Only a fool expects rational behavior from his fellow humans. Why do you expect it from a machine that humans have constructed? Computers simulate determinism; only Tao is perfect.The rules of programming are transitory; only Tao is eternal. Therefore, you must contemplate Tao before you receive Enlightenment.&lt;/p>
+&lt;p>唯有傻子才会期望世人举止理性。你又如何期望世人建造的机器能有理性的行为呢？计算机只能模拟决定论；世间唯有道是完美的。编程无常法，唯道恒久远。在获得启示之前，你必须深思道。&lt;/p>
+&lt;h2 id="其七">其七&lt;/h2>
+&lt;p>What I follow is Tao &amp;ndash; beyond all techniques! When I first began to program, I would see before me the whole problem in one mass. After three years, I no longer saw this mass. Instead, I used subroutines. But now I see nothing. My whole being exists in a formless void. My senses are idle. My spirit, free to work without a plan, follows its own instinct. In short, my program writes itself. True, sometimes there are difficult problems. I see them coming, I slow down, I watch silently. Then I change a single line of code and the difficulties vanish like puffs of idle smoke. I then compile the program. I sit still and let the joy of the work fill my being. I close my eyes for a moment and then log off.&lt;/p>
+&lt;p>我追求的是道——超越所有技术的道！我刚开始编程时，眼前的问题堆积成团、杂乱如麻。三年后，我再也没见过这样的问题，因为我学会了子程序。如今，我什么也看不见了。我的存在变得虚无，我感受不到任何事物。我的精神不受约束，全凭本能自由工作。换句话说，我写程序时，代码是一行行自己显现的。当然，有时我会碰到一些棘手的问题。我看着这些问题出现，我慢下来，静静地看着。然后我改动一行代码，问题像轻烟般自己消失了。我开始编译程序。我静静地坐着，感受着快乐盈满身心。我闭目冥想片刻，然后退出系统。&lt;/p>
+&lt;h2 id="其八">其八&lt;/h2>
+&lt;p>Software rots if not used.&lt;/p>
+&lt;p>软件没人用，神奇也会化为腐朽。&lt;/p>
+&lt;h2 id="其九">其九&lt;/h2>
+&lt;p>Does a good farmer neglect a crop he has planted?&lt;/p>
+&lt;p>好的农民会随意对待自己种的庄稼吗？&lt;/p>
+&lt;p>Does a good teacher overlook even the most humble student?&lt;/p>
+&lt;p>好的老师会忽视自己最谦虚的学生吗？&lt;/p>
+&lt;p>Does a good father allow a single child to starve?&lt;/p>
+&lt;p>好的父亲会舍得让任何一个孩子挨饿吗？&lt;/p>
+&lt;p>Does a good programmer refuse to maintain his code?&lt;/p>
+&lt;p>好的程序员会拒绝维护自己的代码吗？&lt;/p>
+&lt;h2 id="其十">其十&lt;/h2>
+&lt;p>Why are programmers non-productive? Because their time is wasted in meetings.&lt;/p>
+&lt;p>为什么程序员没有工作效率？因为要开的会议没完没了。&lt;/p>
+&lt;p>Why are programmers rebellious? Because the management interferes too much.&lt;/p>
+&lt;p>为什么程序员不听指挥？因为管理层管得太多太深。&lt;/p>
+&lt;p>Why are the programmers resigning one by one? Because they are burnt out.&lt;/p>
+&lt;p>为什么程序员一个接一个辞职？因为他们累得心力交瘁。&lt;/p>
+&lt;p>Having worked for poor management, they no longer value their jobs.&lt;/p>
+&lt;p>在管理不善的部门工作，他们再也看不到自己工作的价值。&lt;/p>
+&lt;h2 id="其十一">其十一&lt;/h2>
+&lt;p>In the East there is a shark which is larger than all other fish. It changes into a bird whose wings are like clouds filling the sky.&lt;/p>
+&lt;p>东方有鱼，其名为鲲。鲲之大，绵绵若千里之远；化而为鸟，其名为鹏。鹏之翼，皇皇若垂天之云。&lt;/p>
+&lt;p>When this bird moves across the land, it brings a message from Corporate Headquarters. This message drops into the midst of the programmers, like a seagull making its mark upon the beach. Then the bird mounts on the wind and, with the blue sky at its back, returns home.&lt;/p>
+&lt;p>这只大鸟从东边飞来，带来了企业总部的消息。如海鸥掠过沙滩，大鸟将消息撒播在了程序员之间。随后它背负青天，扶摇直上，缓缓归去。&lt;/p>
+&lt;p>The novice programmer stares in wonder at the bird, for he understands it not. The average programmer dreads the coming of the bird, for he fears its message. The Master Programmer continues to work at his terminal, unaware that the bird has come and gone.&lt;/p>
+&lt;p>初级程序员惊奇地盯着大鸟，因为他不明白这意味着什么。中级程序员害怕大鸟的到来，因为它带来了总部的消息。而编程大师一直在电脑前工作，完全没注意到大鸟来过。&lt;/p>
+&lt;h2 id="其十二">其十二&lt;/h2>
+&lt;p>Thus spake the Master Programmer:
+&amp;ldquo;Without the wind, the grass does not move. Without software hardware is useless.&amp;rdquo;&lt;/p>
+&lt;p>编程大师如是说：
+「没有风，草就不会动；没有软件，硬件就没用。」&lt;/p>
+&lt;h2 id="其十三">其十三&lt;/h2>
+&lt;p>Hardware met Software on the road to Changtse. Software said: &amp;ldquo;You are Yin and I am Yang. If we travel together, we will become famous and earn vast sums of money.&amp;rdquo; And so they set forth together, thinking to conquer the world.&lt;/p>
+&lt;p>在通往长江的路上，硬件和软件相遇了。软件说：「你是阴，我是阳。我们结伴而行，日后一定会出名、赚大钱。」于是他们一同出发，想要征服世界。&lt;/p>
+&lt;p>Presently, they met Firmware, who was dressed in tattered rags and hobbled along propped on a thorny stick. Firmware said to them: &amp;ldquo;The Tao lies beyond Yin and Yang. It is silent and still as a pool of water. It does not seek fame; therefore, nobody knows its presence. It does not seek fortune, for it is complete within itself. It exists beyond space and time.&amp;rdquo;&lt;/p>
+&lt;p>不久，他们碰见了固件。固件衣衫褴褛，拄着一根拐杖，步履蹒跚地走着。固件对他们说：「道在阴阳之外。它似一潭止水，寂静无声。它不求闻达，所以没人知道它在哪儿。它不求财富，因为它自身已完整无缺。它独立于时空存在。」&lt;/p></description></item><item><title>[译] 分布式系统中的模式</title><link>https://andornot.xyz/posts/patterns-of-distributed-systems/</link><pubDate>Mon, 21 Sep 2020 10:12:10 +0800</pubDate><guid>https://andornot.xyz/posts/patterns-of-distributed-systems/</guid><description>
+&lt;p>该文章翻译自 Martin Fowler 官方网站上的系列文章，原文链接 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/">Patterns of Distributed Systems&lt;/a>，此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用「模式」，这些「模式」对我们普通开发者了解学习分布式系统有很好的指导意义。&lt;/p>
+&lt;h2 id="正文">正文&lt;/h2>
+&lt;p>分布式系统为编程提出了一系列特殊的挑战。分布式系统通常要求我们持有多个数据副本，同时需要确保这些数据的同步。然而我们并不能依赖于这些服务节点能够可靠地工作，网络延迟很容易导致节点数据出现不一致。尽管如此，许多公司组织还是依靠一系列核心分布式软件来解决数据存储、消息传递、系统管理和（数据）计算能力。这些系统面临着共同的问题，它们可以用类似的方案来解决这些问题。本文将归纳这些解决方案并将其发展为&lt;strong>模式&lt;/strong>，有了这些模式，我们就可以建立起如何更好地理解、交流和讲分布式系统设计的理解。&lt;/p>
+&lt;h2 id="这是关于什么">这是关于什么？&lt;/h2>
+&lt;p>在过去的几个月里，作者一直在 ThoughtWorks 举办分布式系统的研讨会。在举办研讨会时，面临的一个关键挑战是如何将分布式系统的理论关联映射到 &lt;strong>Kafka&lt;/strong> 或 &lt;strong>Cassandra&lt;/strong> 等开源的代码中，同时保持讨论的通用性，以涵盖广泛的解决方案。「模式」的概念提供了一个很好的思路。&lt;/p>
+&lt;p>「模式」结构就其本质而言，允许我们专注于一个特定的问题，并清楚知道为什么需要一个特定的解决方案来解决它。然后，我们可以给出一个代码结构来描述解决方案，这个结构要足够具体，可以描述实际的解决方案，但同时又要足够通用，可以适应足够广的应用场景。模式技术还可以让我们将各种模式连接在一起，构建一个完整的系统。这就为讨论分布式系统的实现提供了一个很好的术语。&lt;/p>
+&lt;p>下面是第一批在主流开源分布式系统中观察到的模式。希望这套模式能对所有的开发者有所帮助。&lt;/p>
+&lt;h3 id="分布式系统---实施的角度">分布式系统 - 实施的角度&lt;/h3>
+&lt;p>今天的企业架构中充满了各种平台和框架，这些平台和框架都是分布式的。如果我们概览一下今天典型的企业架构中使用的框架和平台，它看起来像以下内容：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>框架及平台类型&lt;/th>
+&lt;th>示例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>数据库&lt;/td>
+&lt;td>Cassandra, HBase, Riak&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>消息代理&lt;/td>
+&lt;td>Kafka, Pulsar&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>基础设施&lt;/td>
+&lt;td>Kubernetes, Mesos, Zookeeper, etcd, Consul&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>内存数据库/计算网格&lt;/td>
+&lt;td>Hazelcast, Pivotal Gemfire&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>状态化微服务&lt;/td>
+&lt;td>Akka Actors, Axon&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>文件系统&lt;/td>
+&lt;td>HDFS, Ceph&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>本质上讲这些系统都是「分布式」的。什么叫系统的分布式？有两个方面：&lt;/p>
+&lt;ol>
+&lt;li>它们运行在多台服务器上。一个集群中服务器的数量可以从三台服务器到几千台服务器不等。&lt;/li>
+&lt;li>它们管理数据。所以这些系统本质上是「有状态」的系统。&lt;/li>
+&lt;/ol>
+&lt;p>当多个服务器参与存储数据时，有几种场景会出问题。上述系统都需要解决这些问题。解决这些问题时会有一些反复出现的解决方案。当了解了这些解决方案的一般形式，会更有助于理解这些系统的更广泛的实现，当需要构建新的系统时，就可以起到很好的指导作用。&lt;/p>
+&lt;h4 id="模式">模式&lt;/h4>
+&lt;p>模式是由 Christopher Alexander 提出的概念，在软件界被广泛接受，是用来记录用于构建软件系统的设计结构。模式提供了一种结构化的方式来看待一个问题空间，并且这种方式被广泛认可。使用模式的一个有趣的方式是以模式序列或模式语言的形式将几个模式连接在一起，这为实现一个 &amp;ldquo;整体 &amp;ldquo;或完整的系统提供了一些指导。把分布式系统看成一系列模式，是一个深入了解其实现的有用方法。&lt;/p>
+&lt;h2 id="问题及通用的解决方案">问题及通用的解决方案&lt;/h2>
+&lt;p>当数据存储在多个服务器上时，有这么几种场景可能会导致出错。&lt;/p>
+&lt;h3 id="进程崩溃">进程崩溃&lt;/h3>
+&lt;p>进程随时可能崩溃。无论是由于硬件故障还是软件故障。进程崩溃的方式有很多：&lt;/p>
+&lt;ol>
+&lt;li>它可以被系统管理员关闭进行常规维护。&lt;/li>
+&lt;li>它可以在做一些文件 IO 操作时被杀死，因为磁盘已满或者异常没有得到妥善处理。&lt;/li>
+&lt;li>在云环境中它可能会更加棘手，因为一些其他的随机事件可能会使服务器宕机。&lt;/li>
+&lt;/ol>
+&lt;p>我们的最低要求是，如果进程负责存储数据，那么它们从设计上必须保证存储在服务器上数据的持久性。即使一个进程突然崩溃，也应当保存它已经通知用户成功存储的所有数据。根据访问模式的不同，不同的存储引擎有不同的存储结构，从简单的 &lt;strong>Hash Map&lt;/strong> 到复杂的图存储。由于将数据刷新到磁盘上是最耗时的操作之一，不可能每一次对数据的插入或更新都刷新到磁盘上。所以大多数数据库的内存存储结构只定期向磁盘刷新。这就带来了一个风险，如果进程突然崩溃，未向磁盘刷新的数据都会丢失。&lt;/p>
+&lt;p>一种叫做 &lt;strong>Write-Ahead Log&lt;/strong> 的技术被用来解决这种问题。服务器将每个状态变化作为一个命令存储在硬盘上的一个 append-only 的文件中。文件附加操作一般是一个非常快的操作，所以可以在不影响性能的情况下进行。单一的 log 文件、按顺序追加的特性，使之用来存储每次更新。在服务器启动时，可以重新回放日志，再次建立起服务崩溃前的内存状态。&lt;/p>
+&lt;p>这就提供了一个持久化的保证。即使服务器突然崩溃，然后重新启动，数据也不会丢失。但是在服务器恢复之前，客户端将无法从服务器获取或存储任何数据。所以在服务器故障的情况下，我们缺乏可用性。&lt;/p>
+&lt;p>一个显而易见的解决方案是将数据存储在多个服务器上。因此，我们可以在多个服务器上复制 &lt;strong>Write-Ahead Log&lt;/strong> 日志。&lt;/p>
+&lt;p>当涉及到多个服务器时，需要考虑的故障场景就更多了。&lt;/p>
+&lt;h3 id="网络延迟">网络延迟&lt;/h3>
+&lt;p>在 TCP/IP 协议栈中，在网络上传输消息时造成的延迟并没有上限。它可以根据网络上的负载而变化。例如，一条 1Gbps 的网络链路可能会被一个触发的大数据量的任务所淹没，填满网络缓冲区，会导致一些消息到达服务器的延迟不可预估。&lt;/p>
+&lt;p>这里有两个问题需要解决：&lt;/p>
+&lt;ol>
+&lt;li>某台服务器不能无限期地等待，需要知道另一台服务器是否崩溃了。&lt;/li>
+&lt;li>不应该有两组服务器（提供服务），每组服务器都认为另一组服务器已经失效，因此继续为不同的客户端服务。这就是所谓的&lt;strong>脑裂&lt;/strong>问题。&lt;/li>
+&lt;/ol>
+&lt;p>为了解决第一个问题，每台服务器都会定期向其他服务器发送一个心跳（HeartBeat）消息。如果未收到心跳，就认为发送心跳的服务器是崩溃了。心跳的间隔时间要足够小，以保证不需要花费很多时间来检测服务器的故障。正如我们将在下面看到的那样，在最坏的情况下，服务器可能会启动并运行，考虑到即使服务器出现故障，集群作为一个组仍可以继续提供服务。这样可以确保提供给客户端的服务不会中断。&lt;/p>
+&lt;p>第二个问题是脑裂。在脑裂的情况下，如果两组服务器独立接受（数据）更新，不同的客户端获取并设置了不同的数据，就算脑裂问题解决，也无法自动解决（不同客户端之间数据的）冲突。&lt;/p>
+&lt;p>要想解决脑裂问题，我们必须保证两组服务器，即使相互之间是断开的，也不能独立进行（数据）处理。为了保证这一点，服务器所做的每一个动作，只有在大多数服务器能够确认该动作时，才算操作成功。如果不能获得多数服务器的确认，就不能提供所需的服务，可能有部分客户端无法接收服务（响应），但集群中的服务器（数据）将始终处于一致的状态。达到多数服务器确认的数量称为 Quorum 机制。如何决定 Quorum 机制生效的数量？那是根据集群所能容忍的故障数来决定的。所以，如果我们有一个5个节点的集群，我们需要的机制生效数量是3个。一般来说，如果我们要容忍f次故障，我们需要的集群大小为2f+1。&lt;/p>
+&lt;p>Quorum 机制可以确保我们有足够的数据副本在一部分服务器故障中保存下来。但这还不足以给客户端提供强大的一致性保证。假设一个客户端发起一个写操作，但写操作只在一台服务器上成功。其他服务器仍然有旧的值。当客户端读取值时，如果有最新值的服务器可用，它可能会得到最新的值。但是，如果当客户端开始读取值时，拥有最新值的服务器不可用，它很可能得到一个旧值。为了避免这种情况，需要跟踪 Quorum 是否同意某项操作，并且只向客户端发送保证在所有服务器上可用的值。在这种情况下使用了 Leader 和 Followers 机制。其中一台服务器被选为 Leader，其他服务器作为 Follower。Leader 控制和协调在 Followers 上的数据复制。Leader 现在需要决定，哪些变化应该对客户端可见。High-Water Mark 用于跟踪 write ahead log 中已知已成功复制到 Quorum 的跟随者的条目。所有到达 high-water mark 标记条目都会对客户端可见。Leader 也会将 high-water mark 传播给 Followers。因此，如果 Leader 失败了，而其中一个 Follower 成为新的 Leader，那么客户端看到的内容就不会有任何不一致。&lt;/p>
+&lt;h3 id="进程暂停">进程暂停&lt;/h3>
+&lt;p>但这还不是全部，即使有 Quorum 和 Leader Followers 机制，也有一个棘手的问题需要解决。Leader 进程可以任意暂停。一个进程可以暂停的原因有很多。对于支持垃圾回收的语言来说，可能会有一个很长的垃圾回收暂停。一个有长时间垃圾回收暂停的 Leader，可能与 Followers 断开连接，在暂停结束后会继续向跟随者发送消息。同时，由于追随者没有收到 Leader 的心跳，他们可能已经选出了新的 Leader，并接受了客户端的（数据）更新。如果照原样处理旧 Leader 的请求，可能会覆盖一些（数据）更新。所以我们需要一个机制来检测来自过时的 Leader 的请求。Generation Clock用于标记和检测来自过时 Leader 的请求。通常是（维护）一个单调递增的数字。&lt;/p>
+&lt;h3 id="时钟不同步及事件排序">时钟不同步及事件排序&lt;/h3>
+&lt;p>从新的 Leader 消息中检测出老的 Leader 消息的问题，是维持消息排序的问题。看起来我们可以使用系统时间戳来对一组消息进行排序，但是我们不能这样做。不能使用系统时钟的主要原因是，跨服务器的系统时钟不能保证同步。计算机中的时钟是由石英晶体管理的，根据晶体的振荡来测量时间。&lt;/p>
+&lt;p>这种机制很容易出错，因为晶体的振荡速度可能快一些，也可能慢一些，所以不同的服务器的时间可能大相径庭。一组服务器上的时钟是由一个叫做 NTP 的服务来同步的。这个服务会定期检查一组服务器的全局时间，并据此调整计算机时钟。&lt;/p>
+&lt;p>因为这发生在网络上的通信，而网络延迟可能会像上面的章节所讨论的那样有所不同，时钟同步可能会因为网络问题而产生延迟。这可能会导致服务器时钟相互漂移，在 NTP 同步发生后，甚至会在时间上后移。由于计算机时钟的这些问题，一般不使用一天中的具体时间来排序事件。取而代之的是一种叫做 Lamport 时间戳的简单技术。Generation Clock 就是一个例子。&lt;/p>
+&lt;h2 id="整合起来---分布式系统示例">整合起来 - 分布式系统示例&lt;/h2>
+&lt;p>我们可以看到，理解这些模式，有助于我们从基础上建立一个完整的系统。我们以共识的实现为例。分布式共识是分布式系统实现的一个特例，它能提供最强的一致性保证。在流行的企业系统中常见的例子有，Zookeeper，etcd 和 Consul。它们实现了 zab 和 Raft 等共识算法，提供了复制和强一致性。还有其他流行的算法来实现共识，Google 的 Chubby 锁定服务中使用的 Paxos，Viewstamped Replication 和 Virtual Synchrony。简单来说，共识是指一组服务器就存储的数据、数据的存储顺序以及什么时候让这些数据对客户端可见达成一致。&lt;/p>
+&lt;h3 id="实现共识的模式序列">实现共识的模式序列&lt;/h3>
+&lt;p>共识实现采用状态机复制来实现容错。在状态机复制中，存储服务，如键值存储，被复制在所有服务器上，用户的输入在每个服务器上以相同的顺序执行。实现这一目标的关键实现技术是在所有服务器上复制 Write-Ahead Log，以拥有一个 &amp;ldquo;Replicated Wal&amp;rdquo;。&lt;/p>
+&lt;p>我们可以把实现 Replicated Wal 的模式组合如下。&lt;/p>
+&lt;p>为了提供耐久性保证，使用 Write-Ahead Log。使用 Segmented Log 将 Write Ahead Log 分成多个片段。这有助于日志清理，而日志清理由 Low-Water Mark 处理。通过在多个服务器上复制 Write-Ahead Log 来提供容错。服务器之间的复制是通过使用 Leader 和 Followers 来管理的。Quorum 用于更新 High-Water Mark，以决定哪些值对客户端可见。通过使用 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/singular-update-queue.html">Singular Update Queue&lt;/a>，所有的请求都以严格的顺序进行处理。在使用 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html">Single Socket Channel&lt;/a> 从 Leader 向 Followers 发送请求时，顺序是保持的。为了优化 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html">Single Socket Channel&lt;/a> 的吞吐量和延迟，使用了 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/request-pipeline.html">Request Pipeline&lt;/a>。Followers 通过从 Leader 收到的心跳检测了解 Leader 的可用性。如果 Leader 因为网络分区而暂时与集群断开连接，则会通过使用 &lt;a href="https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html">Generation Clock&lt;/a> 来检测。&lt;/p>
+&lt;p>&lt;img src="https://andornot.xyz/Replicated-WAL.png" alt="Replicated WAL">&lt;/p>
+&lt;p>这样，从一般形式上理解问题以及其通用的解决方案，有助于理解构建一个完整的系统。&lt;/p>
+&lt;h2 id="下一步">下一步&lt;/h2>
+&lt;p>分布式系统是一个庞大的话题。这里涉及的一些模式只是一小部分，涵盖了不同的类别，以展示模式方法如何帮助理解和设计分布式系统。我将不断增加模式的内容，大致包括以下几类在任何分布式系统中解决的问题。&lt;/p>
+&lt;ol>
+&lt;li>集群成员和故障检测&lt;/li>
+&lt;li>分区&lt;/li>
+&lt;li>复制和一致性&lt;/li>
+&lt;li>存储&lt;/li>
+&lt;li>处理&lt;/li>
+&lt;/ol></description></item><item><title>GitHub Star 仓库管理利器 - stargazed</title><link>https://andornot.xyz/posts/github-starred-repositories-management-tools-stargazed/</link><pubDate>Wed, 09 Sep 2020 21:22:10 +0800</pubDate><guid>https://andornot.xyz/posts/github-starred-repositories-management-tools-stargazed/</guid><description>
+&lt;p>个人在 GitHub 收藏了非常多的开源项目仓库，到目前为止收藏的项目大概 3000+，这些项目检索起来非常繁琐，导致一些收藏的项目由于检索效率的问题没有利用起来。&lt;/p>
+&lt;p>所幸无意间发现了一个名为 &lt;a href="https://github.com/abhijithvijayan/stargazed">stargazed&lt;/a> 工具，可以将 GitHub 用户收藏过的项目，进行分类并输出到 Markdown 文件中。
+stargazed 会将项目按语言分类并生成目录，方便跳转查看不同编程语言的项目，并且生成的项目条目包括项目名称、项目地址、项目描述、作者等信息，可以非常方便地检索。&lt;/p>
+&lt;h3 id="如何使用">如何使用&lt;/h3>
+&lt;p>该工具需要用户提供提供一个 GitHub 仓库，用来存储生成的 Markdown 文件。支持通过 GitHub 的 Personal access tokens 来自动创建仓库，同时支持 GitHub Actions 来实现定时更新文件信息。&lt;/p>
+&lt;p>使用该工具需要安装 Node.js 环境，安装命令：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">npm install -g stargazed
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用命令如下，需要将 GITHUB_USERNAME 和 GITHUB-TOKEN 替换为自己的信息，运行成功后会在自动在 awesome-stars 仓库中生成文件。&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">stargazed --username GITHUB_USERNAME --token &lt;span style="color:#e6db74">&amp;#34;GITHUB-TOKEN&amp;#34;&lt;/span> --repository &lt;span style="color:#e6db74">&amp;#34;awesome-stars&amp;#34;&lt;/span> --sort --workflow
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>上述命令会自动创建 GitHub Actions 配置文件，会定时更新生成的文件，即第一次执行后后续可以无需再次介入。&lt;/p>
+&lt;p>关于项目的其他信息可以访问 &lt;a href="https://github.com/abhijithvijayan/stargazed">https://github.com/abhijithvijayan/stargazed&lt;/a> 进行查看。&lt;/p></description></item><item><title>使用 GitHub Actions 自动构建部署 Hugo 静态页面</title><link>https://andornot.xyz/posts/github-action-deploy-hugo/</link><pubDate>Sun, 30 Aug 2020 17:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/github-action-deploy-hugo/</guid><description>
+&lt;p>&lt;code>GitHub Actions&lt;/code> 可以实现应用的持续集成、持续部署，可以与 &lt;code>GitHub Pages&lt;/code> 整合实现静态网页的自动构建和部署。&lt;/p>
+&lt;p>本博客使用的主题需要使用 &lt;code>Node.js&lt;/code> 环境完成前端资源的构建，同时需要 &lt;code>Hugo&lt;/code> 环境完成静态页面的生成，因此需要多语言环境分步完成应用的构建。&lt;/p>
+&lt;p>在 &lt;code>GitHub Actions&lt;/code> 配置使用多个构建步骤，前几个步骤用来实现多个语言框架环境的准备，后面的步骤完成应用的构建，最后完成应用的发布。&lt;/p>
+&lt;p>下面 &lt;code>GitHub Actions&lt;/code> 工作流程实现 &lt;code>Hugo&lt;/code> 页面构建的详细配置文件：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yml" data-lang="yml">&lt;span style="color:#75715e"># This is a basic workflow to help you get started with Actions&lt;/span>
+&lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">GitHub Pages&lt;/span>
+&lt;span style="color:#75715e"># Controls when the action will run. Triggers the workflow on push or pull request&lt;/span>
+&lt;span style="color:#75715e"># events but only for the master branch&lt;/span>
+&lt;span style="color:#f92672">on&lt;/span>:
+&lt;span style="color:#f92672">push&lt;/span>:
+&lt;span style="color:#f92672">branches&lt;/span>:
+- &lt;span style="color:#ae81ff">master&lt;/span>
+&lt;span style="color:#75715e"># A workflow run is made up of one or more jobs that can run sequentially or in parallel&lt;/span>
+&lt;span style="color:#f92672">jobs&lt;/span>:
+&lt;span style="color:#75715e"># This workflow contains a single job called &amp;#34;build&amp;#34;&lt;/span>
+&lt;span style="color:#f92672">build&lt;/span>:
+&lt;span style="color:#75715e"># The type of runner that the job will run on&lt;/span>
+&lt;span style="color:#f92672">runs-on&lt;/span>: &lt;span style="color:#ae81ff">ubuntu-latest&lt;/span>
+&lt;span style="color:#75715e"># Steps represent a sequence of tasks that will be executed as part of the job&lt;/span>
+&lt;span style="color:#f92672">steps&lt;/span>:
+&lt;span style="color:#75715e"># Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Checkout repository&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/checkout@v2&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Checkout submodules&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">textbook/git-checkout-submodule-action@master&lt;/span>
+&lt;span style="color:#f92672">with&lt;/span>:
+&lt;span style="color:#f92672">remote&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Setup Node.js environment&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/setup-node@v1.4.4&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Setup Go environment&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">actions/setup-go@v2.1.2&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Hugo setup&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-hugo@v2.4.13&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Install Dependencies&lt;/span>
+&lt;span style="color:#f92672">run&lt;/span>: &lt;span style="color:#ae81ff">npm install --dev @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Build&lt;/span>
+&lt;span style="color:#f92672">run&lt;/span>: |&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> hugo -v --gc --minify
+&lt;/span>&lt;span style="color:#e6db74"> echo &amp;#39;andornot.xyz&amp;#39; &amp;gt; public/CNAME&lt;/span>
+- &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">Deploy&lt;/span>
+&lt;span style="color:#f92672">uses&lt;/span>: &lt;span style="color:#ae81ff">peaceiris/actions-gh-pages@v3&lt;/span>
+&lt;span style="color:#f92672">with&lt;/span>:
+&lt;span style="color:#f92672">github_token&lt;/span>: &lt;span style="color:#ae81ff">${{ secrets.GITHUB_TOKEN }}&lt;/span>
+&lt;span style="color:#f92672">publish_branch&lt;/span>: &lt;span style="color:#ae81ff">gh-pages&lt;/span>
+&lt;span style="color:#f92672">publish_dir&lt;/span>: &lt;span style="color:#ae81ff">./public&lt;/span>
+&lt;span style="color:#f92672">force_orphan&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>按照配置，只有当 &lt;code>master&lt;/code> 分支产生提交时才会触发构建操作，构建完成后将静态网页资源发布到 &lt;code>gh-pages&lt;/code> 分支。&lt;/p>
+&lt;p>最初尝试将 &lt;code>GitHub Actions&lt;/code> 配置文件放在非 &lt;code>master&lt;/code> 分支中，例如 &lt;code>blog&lt;/code> 分支，预想当 &lt;code>blog&lt;/code> 分支提交新内容时触发构建，
+并将构建完成的资源发布到 &lt;code>master&lt;/code> 分支，但尝试了一下似乎配置放在非 &lt;code>master&lt;/code> 分支无法触发构建操作。&lt;/p>
+&lt;p>因此最后将构建静态页面需要的文章、主题等资源与 &lt;code>GitHub Actions&lt;/code> 配置一同放在 &lt;code>master&lt;/code> 分支，
+单独使用并设置 &lt;code>gh-pages&lt;/code> 分支作为构建完成后资源发布和 &lt;code>GitHub Pages&lt;/code> 页面访问的分支。&lt;/p>
+&lt;p>这样便完成了整个 &lt;code>Hugo&lt;/code> 应用的自动构建和部署，无需在本地环境进行配置环境生成静态页面，只需将新写的内容提交到 &lt;code>master&lt;/code> 分支即可。&lt;/p></description></item><item><title>About</title><link>https://andornot.xyz/about/</link><pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate><guid>https://andornot.xyz/about/</guid><description>
+&lt;img src="https://andornot.xyz/img/hello.jpg"/>
+&lt;h1 id="hello-world">Hello World&lt;/h1>
+&lt;p>该站点是我个人的博客站点，内容主要面向计算机技术方面，以记录而非教学的目的，编写转载个人感兴趣的内容。&lt;/p>
+&lt;h2 id="github">GitHub&lt;/h2>
+&lt;p>👉 &lt;a href="https://github.com/igaozp">GitHub/igaozp&lt;/a>&lt;/p></description></item><item><title>Showcase</title><link>https://andornot.xyz/showcase/</link><pubDate>Sun, 30 Aug 2020 00:00:00 +0000</pubDate><guid>https://andornot.xyz/showcase/</guid><description>
+&lt;h1 id="my-website">My Website&lt;/h1>
+&lt;h3 id="andornotxyzhttpsandornotxyz-个人博客">&lt;a href="https://andornot.xyz">andornot.xyz&lt;/a> 个人博客&lt;/h3>
+&lt;h1 id="my-project">My Project&lt;/h1>
+&lt;h3 id="newpagefuturefogcomhttpsnewpagefuturefogcom-新拟态风格的搜索页面">&lt;a href="https://newpage.futurefog.com">newpage.futurefog.com&lt;/a> 新拟态风格的搜索页面&lt;/h3>
+&lt;h3 id="自建-rsshubhttpsrsshubfuturefogcom">&lt;a href="https://rsshub.futurefog.com">自建 RSSHub&lt;/a>&lt;/h3></description></item><item><title>高性能 MySQL 读书笔记 - 架构和历史</title><link>https://andornot.xyz/posts/high-performance-mysql-note-01/</link><pubDate>Wed, 19 Aug 2020 21:25:10 +0800</pubDate><guid>https://andornot.xyz/posts/high-performance-mysql-note-01/</guid><description>
+&lt;h1 id="并发控制">并发控制&lt;/h1>
+&lt;p>MySQL 中只要存在多个查询同时修改数据的场景，就会产生并发控制的问题。MySQL 通常在两个层面进行并发控制，一是&lt;strong>服务器&lt;/strong>层面，二是&lt;strong>存储引擎&lt;/strong>层面。&lt;/p>
+&lt;h2 id="读写锁">读写锁&lt;/h2>
+&lt;p>并发控制中一类经典的问题就是：&lt;strong>如何避免对同一条数据进行并发地修改和查询操作，以避免产生不可预测的结果。&lt;/strong>&lt;/p>
+&lt;p>这里可以通过构建一个锁系统来解决，这个系统有两种锁构成：共享锁（&lt;code>shared lock&lt;/code>）和排他锁（&lt;code>exclusive lock&lt;/code>），也被称为读锁（&lt;code>read lock&lt;/code>）和写锁（&lt;code>write lock&lt;/code>）。&lt;/p>
+&lt;p>通常读锁是共享的，意味着多个客户端可以同时读取同一数据资源，因为读操作不会对数据产生副作用，数据不会产生变化。
+而写锁是排他的、非共享的，一个写锁会阻塞其他的写锁和读锁，只有这样才能保证其他的写操作和当前的写操作不会产生冲突，读操作不会读取到正在写入的内容。&lt;/p>
+&lt;p>这些锁定操作在 MySQL 内部频繁地发生着，MySQL 会自动管理这些锁的锁定和释放，对我们开发者来说是透明的，无需去干预。&lt;/p>
+&lt;h2 id="锁粒度">锁粒度&lt;/h2>
+&lt;p>提高共享资源并发性的一种方式是让锁定的对象更具有选择性，尽可能对数据精确地锁定，锁定的数据越少，系统的整体并发程度越高。
+但是锁的管理也需要消耗系统资源，为了精确地锁定资源系统可能会额外消耗资源去检索定位数据，系统的整体性能也会收到影响。&lt;/p>
+&lt;p>所以需要一种策略去&lt;strong>平衡锁的开销和数据的安全性&lt;/strong>。&lt;/p>
+&lt;h3 id="表锁">表锁&lt;/h3>
+&lt;p>表锁是 MySQL 中最基本的锁策略，且性能开销最小。
+用户对表进行写操作时（插入、删除、更新）需要获得写锁锁定整张表，阻塞其他用户对该表的所有读写操作。
+当没有写锁时才能获取到读锁，且读锁之间不会相互阻塞。另外，写锁比读锁有着更高的优先级。&lt;/p>
+&lt;h3 id="行级锁">行级锁&lt;/h3>
+&lt;p>行级锁能够最大程度地支持并发处理，同时也意味着在锁处理上会带来最大程度的性能开销。与表锁不同行级锁只能由存储引擎来提供实现。&lt;/p>
+&lt;h1 id="事务">事务&lt;/h1>
+&lt;p>说到数据库就不能不提事务，简单来说事务内的语句要么全部执行成功，要么全部失败。&lt;/p>
+&lt;p>事务必须具备原子性（&lt;code>atomicity&lt;/code>）、一致性（&lt;code>consistency&lt;/code>）、隔离性（&lt;code>isolation&lt;/code>）、持久性（&lt;code>durability&lt;/code>），即&lt;strong>ACID&lt;/strong>。&lt;/p>
+&lt;p>MySQL 默认采用自动提交事务，即每个查询都被当作一个事务执行并提交。&lt;/p>
+&lt;h2 id="隔离级别">隔离级别&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>隔离级别&lt;/th>
+&lt;th>脏读可能性&lt;/th>
+&lt;th>不可重复读可能性&lt;/th>
+&lt;th>幻读可能性&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>READ UNCOMMITTED&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>READ COMMITTED&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>REPEATABLE READ (DEFAULT)&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SERIALIZABLE&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>何为脏读，简单来说指一个事务中访问到了另外一个事务未提交的数据。&lt;/p>
+&lt;p>又何为幻读，即一个事务读取两次，但得到的记录条数不一致，如果记录的数据不一致，那则称为不可重复读。&lt;/p>
+&lt;h2 id="死锁">死锁&lt;/h2>
+&lt;p>死锁是指多个事务在同一资源上相互占用，并且请求锁定对方占用的资源，从而导致恶性循环的现象。&lt;/p>
+&lt;p>&lt;code>InnoDB&lt;/code> 目前解决死锁的方法为：&lt;strong>将持有最少行级排他锁的事务进行回滚&lt;/strong>。&lt;/p>
+&lt;h1 id="多版本并发控制">多版本并发控制&lt;/h1>
+&lt;p>多版本并发控制（&lt;code>MVCC&lt;/code>）是行级锁的一个变种，在很多情况下避免了加锁操作，且写操作只锁定必要的行，&lt;code>MVCC&lt;/code> 通过保存数据在某个时间点的快照来实现。&lt;/p>
+&lt;p>&lt;code>MVCC&lt;/code> 一般由乐观锁（&lt;code>optimistic lock&lt;/code>）和悲观锁（&lt;code>pessimistic lock&lt;/code>）来控制。&lt;/p>
+&lt;p>乐观锁假设不会发生并发冲突，只在提交操作时检查数据是否被其他人修改过，适用于读多写少的应用场景。&lt;/p>
+&lt;p>悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作，每次在读取数据的时候都会上锁。乐观锁大多使用版本号进行控制。&lt;/p></description></item><item><title>使用 Multimap 对集合按属性进行分组</title><link>https://andornot.xyz/posts/using-mulitmap-group-collections/</link><pubDate>Sat, 25 Jul 2020 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/using-mulitmap-group-collections/</guid><description>
+&lt;h2 id="问题描述">问题描述&lt;/h2>
+&lt;p>存在一种场景，给定一个数据集合，根据集合元素中的某个字段属性对整个集合数据进行分组。&lt;/p>
+&lt;p>例如有如下的数据列表（省略非关键信息）：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">[
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-07-23 21:01:23&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">2&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-06-23 21:01:23&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">3&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-05-23 21:01:23&amp;#34;&lt;/span>
+}
+]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>想要根据&lt;code>createTime&lt;/code>创建时间的月份，对数据进行分组，得到类似这样的结构：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;JULY&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-07-23 21:01:23&amp;#34;&lt;/span>
+}
+],
+&lt;span style="color:#f92672">&amp;#34;JUNE&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">2&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-06-23 21:01:23&amp;#34;&lt;/span>
+}
+],
+&lt;span style="color:#f92672">&amp;#34;MAY&amp;#34;&lt;/span>: [
+{
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">3&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;createTime&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2020-05-23 21:01:23&amp;#34;&lt;/span>
+}
+]
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="解决方案">解决方案&lt;/h2>
+&lt;p>可以使用 &lt;code>Guava&lt;/code> 提供的 &lt;code>Multimap&lt;/code> 方便的进行处理，&lt;code>Multimap&lt;/code> 可以支持同一个 &lt;code>key&lt;/code> 放入多个 &lt;code>value&lt;/code>。 因此针对上述场景，将月份数据作为 &lt;code>Map&lt;/code> 的 &lt;code>key&lt;/code>，每个月份对应的数据元素作为 &lt;code>value&lt;/code>，便可得到对应的分组结构。参考代码如下：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java">&lt;span style="color:#f92672">import&lt;/span> com.google.common.base.Function&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> com.google.common.collect.Multimap&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> com.google.common.collect.Multimaps&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> org.checkerframework.checker.nullness.qual.Nullable&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.time.LocalDateTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.time.Month&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.ArrayList&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.Collection&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> java.util.Collections&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">MultimapExample&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Data&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">private&lt;/span> Integer id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">private&lt;/span> LocalDateTime createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">Data&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Integer id&lt;span style="color:#f92672">,&lt;/span> LocalDateTime createTime&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">=&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">createTime&lt;/span> &lt;span style="color:#f92672">=&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setId&lt;/span>&lt;span style="color:#f92672">(&lt;/span>Integer id&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">=&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">setCreateTime&lt;/span>&lt;span style="color:#f92672">(&lt;/span>LocalDateTime createTime&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">createTime&lt;/span> &lt;span style="color:#f92672">=&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> Integer &lt;span style="color:#a6e22e">getId&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> id&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> LocalDateTime &lt;span style="color:#a6e22e">getCreateTime&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> createTime&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> String &lt;span style="color:#a6e22e">toString&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#e6db74">&amp;#34;id: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> id &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;, createTime: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> createTime &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;\n&amp;#34;&lt;/span> &lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#75715e">// test with Java 14
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>&lt;span style="color:#f92672">(&lt;/span>String&lt;span style="color:#f92672">[]&lt;/span> args&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#75715e">// generate random data
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> Collection&lt;span style="color:#f92672">&amp;lt;&lt;/span>Data&lt;span style="color:#f92672">&amp;gt;&lt;/span> collection &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ArrayList&lt;span style="color:#f92672">&amp;lt;&amp;gt;(&lt;/span>Collections&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">emptyList&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span> i &lt;span style="color:#f92672">&amp;lt;&lt;/span> 10&lt;span style="color:#f92672">;&lt;/span> i&lt;span style="color:#f92672">++)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+collection&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">add&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#66d9ef">new&lt;/span> Data&lt;span style="color:#f92672">(&lt;/span>i&lt;span style="color:#f92672">,&lt;/span> LocalDateTime&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">now&lt;/span>&lt;span style="color:#f92672">().&lt;/span>&lt;span style="color:#a6e22e">plusMonths&lt;/span>&lt;span style="color:#f92672">(&lt;/span>i&lt;span style="color:#f92672">)));&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>collection&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#75715e">// Data convert to Month function
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> java&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">util&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">function&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">Function&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>Data&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#a6e22e">@Nullable&lt;/span> Month&lt;span style="color:#f92672">&amp;gt;&lt;/span> function &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> Function&lt;span style="color:#f92672">&amp;lt;&amp;gt;()&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#a6e22e">@Nullable&lt;/span>
+&lt;span style="color:#a6e22e">@Override&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> Month &lt;span style="color:#a6e22e">apply&lt;/span>&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#a6e22e">@Nullable&lt;/span> Data data&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">(&lt;/span>data &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>&lt;span style="color:#f92672">;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> data&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">getCreateTime&lt;/span>&lt;span style="color:#f92672">().&lt;/span>&lt;span style="color:#a6e22e">getMonth&lt;/span>&lt;span style="color:#f92672">();&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">};&lt;/span>
+Multimap&lt;span style="color:#f92672">&amp;lt;&lt;/span>Month&lt;span style="color:#f92672">,&lt;/span> Data&lt;span style="color:#f92672">&amp;gt;&lt;/span> result &lt;span style="color:#f92672">=&lt;/span> Multimaps&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">index&lt;/span>&lt;span style="color:#f92672">(&lt;/span>collection&lt;span style="color:#f92672">,&lt;/span> function&lt;span style="color:#f92672">::&lt;/span>apply&lt;span style="color:#f92672">);&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>result&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">asMap&lt;/span>&lt;span style="color:#f92672">());&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>代码中核心的部分，创建了一个 &lt;code>Function&lt;/code> 用于获取数据元素对应的分组的元素（输入 &lt;code>Data&lt;/code> 数据获取对应的分组月份），使用 &lt;code>Multimaps.index&lt;/code> 方法生成分组数据。&lt;/p>
+&lt;p>如果想要对生成的分组数据进行展示、输出等操作，需要调用 &lt;code>asMap&lt;/code> 方法将 &lt;code>Multimap&lt;/code> 转换成朴素的 &lt;code>Java Map&lt;/code> 进行展示输出。&lt;/p></description></item><item><title>Java 10 局部变量类型推断</title><link>https://andornot.xyz/posts/java-reserved-word-var/</link><pubDate>Sun, 25 Nov 2018 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/java-reserved-word-var/</guid><description>
+&lt;p>Java 10 引入了 &lt;code>var&lt;/code> 保留类型来实现局部变量推断。为了兼容旧版本，&lt;code>var&lt;/code> 不是关键字，而是一个保留类型，仍然可以使用 &lt;code>var&lt;/code> 作为为变量和函数名。&lt;/p>
+&lt;p>与 JavaScript 不同，使用 var 修饰的变量仍然是静态类型，并不是与 JavaScript 类似的动态类型，变量的类型在编译期已经确定，不能像动态类型语言一样在运行时随意改变变量的类型，所以 &lt;code>var&lt;/code> 的引入使代码更加简洁易读。&lt;/p>
+&lt;p>我们可以写出这样的代码：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java">var i &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
+var s &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;123&amp;#34;&lt;/span>&lt;span style="color:#f92672">;&lt;/span>
+var list &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> ArrayList&lt;span style="color:#f92672">&amp;lt;&lt;/span>Integer&lt;span style="color:#f92672">&amp;gt;();&lt;/span>
+var map &lt;span style="color:#f92672">=&lt;/span> Map&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">of&lt;/span>&lt;span style="color:#f92672">(&lt;/span>1&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#e6db74">&amp;#34;a&amp;#34;&lt;/span>&lt;span style="color:#f92672">,&lt;/span> 2&lt;span style="color:#f92672">,&lt;/span> &lt;span style="color:#e6db74">&amp;#34;b&amp;#34;&lt;/span>&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>var entry&lt;span style="color:#f92672">:&lt;/span> map&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">entrySet&lt;/span>&lt;span style="color:#f92672">())&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>entry&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#f92672">(&lt;/span>var j &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span> j &lt;span style="color:#f92672">&amp;lt;&lt;/span> 10&lt;span style="color:#f92672">;&lt;/span> j&lt;span style="color:#f92672">++)&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+System&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">out&lt;/span>&lt;span style="color:#f92672">.&lt;/span>&lt;span style="color:#a6e22e">println&lt;/span>&lt;span style="color:#f92672">(&lt;/span>j&lt;span style="color:#f92672">);&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用 &lt;code>var&lt;/code> 声明的变量时必须要在声明的同时初始化：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java">var a&lt;span style="color:#f92672">;&lt;/span> &lt;span style="color:#75715e">// error: &amp;#39;var&amp;#39; on variable without initializer
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>a &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>同时 &lt;code>var&lt;/code> 不能用于局部变量声明以外的地方，例如：&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-java" data-lang="java">&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">LocalVariableTypeInference&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+var num &lt;span style="color:#f92672">=&lt;/span> 0&lt;span style="color:#f92672">;&lt;/span> &lt;span style="color:#75715e">// error: &amp;#39;var&amp;#39; is not allowed here
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+&lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#a6e22e">LocalVariableTypeInference&lt;/span>&lt;span style="color:#f92672">(&lt;/span>var i&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span> &lt;span style="color:#75715e">// error: &amp;#39;var&amp;#39; is not allowed here
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">try&lt;/span> &lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span> &lt;span style="color:#66d9ef">catch&lt;/span> &lt;span style="color:#f92672">(&lt;/span>var e&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">{&lt;/span> &lt;span style="color:#75715e">// error: &amp;#39;var&amp;#39; is not allowed here
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+var &lt;span style="color:#a6e22e">toString&lt;/span>&lt;span style="color:#f92672">()&lt;/span> &lt;span style="color:#f92672">{&lt;/span> &lt;span style="color:#75715e">// error: &amp;#39;var&amp;#39; is not allowed here
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>也不能使用 &lt;code>var&lt;/code> 将变量初始化为 &lt;code>null&lt;/code>&lt;/p></description></item><item><title>Linux 开启 TCP BBR 拥塞控制算法</title><link>https://andornot.xyz/posts/linux-enable-tcp-bbr/</link><pubDate>Mon, 22 Oct 2018 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-enable-tcp-bbr/</guid><description>
+&lt;h2 id="前提">前提&lt;/h2>
+&lt;p>要想开启 TCP BBR，需要 Linux kernel 4.9+ ，如果内核版本过低的话需要升级内核，本教程以 Ubuntu 系统为例。&lt;/p>
+&lt;h3 id="开启-tcp-bbr">开启 TCP BBR&lt;/h3>
+&lt;p>执行 &lt;code>lsmod | grep bbr&lt;/code>，如果结果中没有 &lt;code>tcp_bbr&lt;/code> 的话就先执行&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">modprobe tcp_bbr
+echo &lt;span style="color:#e6db74">&amp;#34;tcp_bbr&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/modules-load.d/modules.conf
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">echo &lt;span style="color:#e6db74">&amp;#34;net.core.default_qdisc=fq&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
+echo &lt;span style="color:#e6db74">&amp;#34;net.ipv4.tcp_congestion_control=bbr&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/sysctl.conf
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>保存生效&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sysctl -p
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sysctl net.ipv4.tcp_available_congestion_control
+sysctl net.ipv4.tcp_congestion_control
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果结果都有 &lt;code>bbr&lt;/code>， 则证明你的内核已开启 &lt;code>bbr&lt;/code>
+执行 &lt;code>lsmod | grep bbr&lt;/code>， 看到有 &lt;code>tcp_bbr&lt;/code> 模块即说明 &lt;code>bbr&lt;/code> 已启动&lt;/p></description></item><item><title>Linux 常用命令简记</title><link>https://andornot.xyz/posts/linux-command/</link><pubDate>Thu, 13 Sep 2018 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-command/</guid><description>
+&lt;p>系统信息显示&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">date &lt;span style="color:#75715e"># 当前日期时间 &lt;/span>
+cal &lt;span style="color:#75715e"># 日历&lt;/span>
+uptime &lt;span style="color:#75715e"># 当前更新的时间&lt;/span>
+w &lt;span style="color:#75715e"># 在线用户信息&lt;/span>
+whoami &lt;span style="color:#75715e"># 当前登录用户的用户名&lt;/span>
+finger user &lt;span style="color:#75715e"># 关于user用户的信息&lt;/span>
+uname -a &lt;span style="color:#75715e"># 内核信息 &lt;/span>
+cat /proc/cpuinfo &lt;span style="color:#75715e"># CPU信息&lt;/span>
+cat /proc/meminfo &lt;span style="color:#75715e"># 内存信息&lt;/span>
+man command &lt;span style="color:#75715e"># 查找关于command命令的手册&lt;/span>
+df &lt;span style="color:#75715e"># 磁盘使用情况&lt;/span>
+du &lt;span style="color:#75715e"># 当前目录下文件的空间占用情况&lt;/span>
+free &lt;span style="color:#75715e"># 内存和交换空间的使用情况&lt;/span>
+whereis app &lt;span style="color:#75715e"># app可能出现的位置&lt;/span>
+which app &lt;span style="color:#75715e"># app运行时默认的运行位置&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件解压缩&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">tar cf file.tar files &lt;span style="color:#75715e"># 将files文件夹或文件, 打包为file.tar&lt;/span>
+tar xf file.tar &lt;span style="color:#75715e"># 解压file.tar&lt;/span>
+tar czf file.tar.gz files &lt;span style="color:#75715e"># 使用gzip创建压缩文件file.tar.gz&lt;/span>
+tar xzf file.tar.gz &lt;span style="color:#75715e"># 使用gzip解压file.tar.gz&lt;/span>
+tar cjf file.tar.bz2 &lt;span style="color:#75715e"># 使用bzip2创建压缩文件file.tar.bz2&lt;/span>
+tar xjf file.tar.bz2 &lt;span style="color:#75715e"># 使用bzip2解压file.tar.bz2&lt;/span>
+gzip file &lt;span style="color:#75715e"># 将file文件压缩并重命名为file.gz&lt;/span>
+gzip -d file.gz &lt;span style="color:#75715e"># 解压缩file.gz&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>进程管理&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ps &lt;span style="color:#75715e"># 显示当前活动进程&lt;/span>
+top &lt;span style="color:#75715e"># 显示所有运行中的进程&lt;/span>
+kill pid &lt;span style="color:#75715e"># 终止ID为pid的进程&lt;/span>
+killall proc &lt;span style="color:#75715e"># 终止所有名为proc*的进程&lt;/span>
+bg &lt;span style="color:#75715e"># 列出已终止或后台运行的进程&lt;/span>
+fg &lt;span style="color:#75715e"># 将最近的后台任务调至前台&lt;/span>
+fg n &lt;span style="color:#75715e"># 将任务n调至前台&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>网络相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ping host &lt;span style="color:#75715e"># ping主机地址并显示结果&lt;/span>
+whois domain &lt;span style="color:#75715e"># 获取domain域名的whois信息&lt;/span>
+dig domain &lt;span style="color:#75715e"># 获取domain域名的DNS信息&lt;/span>
+dig -x host &lt;span style="color:#75715e"># 反向查询host主机&lt;/span>
+wget file &lt;span style="color:#75715e"># 下载文件&lt;/span>
+wget -c file &lt;span style="color:#75715e"># 继续已停止的下载&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>安装软件&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;span style="color:#75715e"># 从源码安装软件&lt;/span>
+./configure
+make
+make install
+dpkg -i pkg.deb &lt;span style="color:#75715e"># 安装deb格式的软件包&lt;/span>
+rpm -Uvh pkg.rpm &lt;span style="color:#75715e"># 安装rpm格式的软件包&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>搜索相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">grep pattern files &lt;span style="color:#75715e"># 查找匹配pattern模式的文件&lt;/span>
+grep -r pattern dir &lt;span style="color:#75715e"># 在目录下递归查找匹配pattern模式&lt;/span>
+command | grep pattern &lt;span style="color:#75715e"># 在command命令的输出中查找匹配pattern的信息&lt;/span>
+locate file &lt;span style="color:#75715e"># 查找file文件的所有实例&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件权限&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">chmod octal file &lt;span style="color:#75715e"># 为文件设置octal数字所代表的权限&lt;/span>
+chmod &lt;span style="color:#ae81ff">777&lt;/span> file &lt;span style="color:#75715e"># 所有人可以完全控制file文件&lt;/span>
+chmod &lt;span style="color:#ae81ff">755&lt;/span> &lt;span style="color:#75715e"># 文件创建者可以完全控制file文件, 组内成员和其他人只能读取和执行&lt;/span>
+4:读取&lt;span style="color:#f92672">(&lt;/span>r&lt;span style="color:#f92672">)&lt;/span>
+2:写入&lt;span style="color:#f92672">(&lt;/span>w&lt;span style="color:#f92672">)&lt;/span>
+1:可执行&lt;span style="color:#f92672">(&lt;/span>x&lt;span style="color:#f92672">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>文件相关&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">ls &lt;span style="color:#75715e"># 列出目录&lt;/span>
+ls -al &lt;span style="color:#75715e"># 列出所有文件目录的信息&lt;/span>
+cd dir &lt;span style="color:#75715e"># 切换到dir目录下&lt;/span>
+cd &lt;span style="color:#75715e"># 切换到home目录下&lt;/span>
+pwd &lt;span style="color:#75715e"># 显示当前目录&lt;/span>
+mkdir dir &lt;span style="color:#75715e"># 创建目录&lt;/span>
+rm file &lt;span style="color:#75715e"># 删除file文件&lt;/span>
+rm -r dir &lt;span style="color:#75715e"># 删除dir目录下的内容&lt;/span>
+rm -f file &lt;span style="color:#75715e"># 强制删除file文件&lt;/span>
+rm -rf dir &lt;span style="color:#75715e"># 强制删除dir目录下的内容&lt;/span>
+cp file1 file2 &lt;span style="color:#75715e"># 复制文件&lt;/span>
+cp -r dir1 dir2 &lt;span style="color:#75715e"># 复制文件夹&lt;/span>
+mv file1 file2 &lt;span style="color:#75715e"># 重命名文件或移动文件&lt;/span>
+ln -s file link &lt;span style="color:#75715e"># 创建符号连接&lt;/span>
+touch file &lt;span style="color:#75715e"># 创建或更新文件&lt;/span>
+more file &lt;span style="color:#75715e"># 输出文件内容&lt;/span>
+head file &lt;span style="color:#75715e"># 输出文件前10行的内容&lt;/span>
+tail file &lt;span style="color:#75715e"># 输出文件后10行的内容&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Linux 字体极简安装教程</title><link>https://andornot.xyz/posts/linux-install-fonts/</link><pubDate>Tue, 25 Jul 2017 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-install-fonts/</guid><description>
+&lt;p>创建字体目录&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo mkdir /usr/share/fonts/oh-my-fonts&lt;span style="color:#e6db74">`&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>将下载的字体复制到相应的目录&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo cp 存放字体的目录/* /usr/share/fonts/oh-my-fonts
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改字体目录权限&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo chmod &lt;span style="color:#ae81ff">644&lt;/span> /usr/share/fonts/oh-my-fonts/*
+cd /usr/share/fonts/oh-my-fonts
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>建立字体缓存&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo mkfontscale
+sudo mkfontdir
+sudo fc-cache -fv
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Electron 中加载 Chrome 扩展</title><link>https://andornot.xyz/posts/electron-load-chrome-plugin/</link><pubDate>Thu, 05 May 2016 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/electron-load-chrome-plugin/</guid><description>
+&lt;p>在 Electron 的开发过程中可以使用专门为 Chrome 开发的扩展插件，这样可以极大的提高页面 Debug 的效率。接下来看一下如何在 Electron 中启用这些扩展插件。&lt;/p>
+&lt;h2 id="下载扩展插件">下载扩展插件&lt;/h2>
+&lt;p>要想使用这些插件，首先要在自己的 Chrome 浏览器中安装这些插件，然后在 Chrome 的扩展程序页面 &lt;code>chrome://extensions&lt;/code> 下找到刚下载的扩展，每一个扩展都以一个专属的 ID ，记住这个扩展的 ID。&lt;/p>
+&lt;h2 id="查找扩展路径">查找扩展路径&lt;/h2>
+&lt;p>接下来需要找到扩展的在本地磁盘的路径:&lt;/p>
+&lt;ul>
+&lt;li>在 Windows 下 Chrome 扩展的路径一般为 &lt;code>C:\\Users\\username\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\&lt;/code> 或者 &lt;code>%LOCALAPPDATA%\\Google\\Chrome\\User Data\\Default\\Extensions&lt;/code>&lt;/li>
+&lt;li>在 Linux 下为 &lt;code>~/.config/google-chrome/Default/Extensions/&lt;/code>&lt;/li>
+&lt;li>在 macOS 下为 &lt;code>~/Library/Application Support/Google/Chrome/Default/Extensions&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>具体的路径可能在不同的系统和软件版本之间有差异，可以自行搜索。然后在目录下找到刚才的 ID 值一样的文件夹，这个文件夹就是扩展的安装路径。&lt;/p>
+&lt;h2 id="加载扩展">加载扩展&lt;/h2>
+&lt;p>在 Electron 中使用 &lt;code>BrowserWindow.addDevToolsExtension(devToolsUrl)&lt;/code> 来加载扩展，&lt;code>devToolsUrl&lt;/code>为扩展的安装路径 。例如加载 Windows 中的 Chrome 扩展 :&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-jsx" data-lang="jsx">&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">devToolsUrl&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;C:\\\\Users\\\\username\\\\AppData\\\\Local\\\\CentBrowser\\\\User Data\\\\Default\\\\Extensions\\\\nhdogjmejiglipccpnnnanhbledajbpd\\\\3.1.2_0&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">createWindow&lt;/span> () {
+&lt;span style="color:#a6e22e">win&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">BrowserWindow&lt;/span>({
+&lt;span style="color:#a6e22e">width&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#ae81ff">800&lt;/span>,
+&lt;span style="color:#a6e22e">height&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#ae81ff">600&lt;/span>,
+})
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">loadURL&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>.&lt;span style="color:#a6e22e">format&lt;/span>({
+&lt;span style="color:#a6e22e">pathname&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span>.&lt;span style="color:#a6e22e">join&lt;/span>(&lt;span style="color:#a6e22e">__dirname&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;index.html&amp;#39;&lt;/span>),
+&lt;span style="color:#a6e22e">protocol&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#39;file:&amp;#39;&lt;/span>,
+&lt;span style="color:#a6e22e">slashes&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+}))
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">webContents&lt;/span>.&lt;span style="color:#a6e22e">openDevTools&lt;/span>()
+&lt;span style="color:#75715e">// 加载扩展
+&lt;/span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">BrowserWindow&lt;/span>.&lt;span style="color:#a6e22e">addDevToolsExtension&lt;/span>(&lt;span style="color:#a6e22e">devToolsUrl&lt;/span>)
+&lt;span style="color:#a6e22e">win&lt;/span>.&lt;span style="color:#a6e22e">on&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;closed&amp;#39;&lt;/span>, () =&amp;gt; {
+&lt;span style="color:#a6e22e">win&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">null&lt;/span>
+})
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这样就可以在 Electron 的开发工具中使用 Chrome 的扩展。&lt;/p>
+&lt;h2 id="其他">其他&lt;/h2>
+&lt;p>现在 Electron 官方只支持部分 Chrome 扩展，具体信息可以查看此&lt;a href="https://electron.atom.io/docs/tutorial/devtools-extension/#supported-devtools-extensions">链接&lt;/a>。&lt;/p></description></item><item><title>Archive</title><link>https://andornot.xyz/archive/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://andornot.xyz/archive/</guid><description/></item></channel></rss>

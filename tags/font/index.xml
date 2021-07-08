@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Font on AnDorN0T</title><link>https://andornot.xyz/tags/font/</link><description>Recent content in Font on AnDorN0T</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 Jul 2017 12:05:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/font/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 字体极简安装教程</title><link>https://andornot.xyz/posts/linux-install-fonts/</link><pubDate>Tue, 25 Jul 2017 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-install-fonts/</guid><description>
+&lt;p>创建字体目录&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo mkdir /usr/share/fonts/oh-my-fonts&lt;span style="color:#e6db74">`&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>将下载的字体复制到相应的目录&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo cp 存放字体的目录/* /usr/share/fonts/oh-my-fonts
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>修改字体目录权限&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo chmod &lt;span style="color:#ae81ff">644&lt;/span> /usr/share/fonts/oh-my-fonts/*
+cd /usr/share/fonts/oh-my-fonts
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>建立字体缓存&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo mkfontscale
+sudo mkfontdir
+sudo fc-cache -fv
+&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
