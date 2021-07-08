@@ -1,5 +1,5 @@
 ---
-title: "IDEA 编译大项目报错解决"
+title: "IDEA 编译大项目报错问题解决"
 date: 2021-07-07T20:53:10+08:00
 draft: false
 tags: ["Java", "IDEA"]
