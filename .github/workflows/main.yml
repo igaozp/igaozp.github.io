@@ -21,10 +21,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@master
         with:
-          remote: true
+          submodules: recursive
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.4
