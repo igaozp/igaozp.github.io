@@ -1,6 +1,6 @@
 baseURL = "https://andornot.xyz/"
 languageCode = "en-us"
-title = "浮落依得"
+title = "AndOrNot - &|!"
 theme = 'hello-friend'
 
 paginate = 5
@@ -33,8 +33,8 @@ paginate = 5
 
 [languages]
   [languages.en]
-    title = "AnDorN0T - 浮落依得"
-    subtitle = "试试冰冷昂贵如云涉水的轻身术"
+    title = "AndOrNot - &|!"
+    subtitle = "幽暗的最高频道还在，为全城遮盖下一百年的昂贵谜底"
     keywords = ""
     # copyright = "andornot.xyz"
     menuMore = "更多"
