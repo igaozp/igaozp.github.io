@@ -50,7 +50,7 @@ paginate = 5
     lastModDisplay = "更新于"
 
     [languages.en.params.logo]
-      logoText = "浮落依得"
+      logoText = "AndOrNot - &|!"
       logoHomeLink = "/"
 
     [languages.en.menu]
