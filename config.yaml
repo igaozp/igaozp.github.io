@@ -11,7 +11,7 @@ languages:
         weight: 2
 
 # Change it to your Disqus shortname before using
-disqusShortname: hugo-theme-stack
+disqusShortname: andornot-xyz
 
 # GA Tracking ID
 googleAnalytics:
@@ -64,7 +64,7 @@ params:
         provider: disqus
 
         disqusjs:
-            shortname:
+            shortname: andornot-xyz
             apiUrl:
             apiKey:
             admin:
