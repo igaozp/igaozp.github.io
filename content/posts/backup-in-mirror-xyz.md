@@ -5,4 +5,4 @@ draft: false
 tags: ["Mirror", "Web 3"]
 ---
 
-本站点内容备份地址 https://mirror.xyz/0x9C401508CA280B709C5d5178C2d94701fdAb57A1
+本站点内容备份地址 https://mirror.xyz/igaozp.eth
