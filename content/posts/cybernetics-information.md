@@ -3,7 +3,6 @@
 title: "关于控制论的一些资料"
 date: 2022-06-02T21:28:10+08:00
 draft: false
-categories: ["控制论"]
 tags: ["控制论"]
 ---
 
