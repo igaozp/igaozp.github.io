@@ -34,3 +34,4 @@ tags: ["控制论"]
 - [《控制论》](https://book.douban.com/subject/2356843/)
 - [《工程控制论》](https://book.douban.com/subject/1967264/)
 - [《控制论革命者-阿连德时代智利的技术与政治》](https://book.douban.com/subject/34998217/)
+- [《失控》](https://book.douban.com/subject/5375620/)
