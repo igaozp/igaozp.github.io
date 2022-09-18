@@ -3,6 +3,8 @@ title: "《Software Engineering at Google》 笔记 01：软件工程是什么�
 date: 2022-09-08T22:12:10+08:00
 draft: false
 tags: ["Software Enginerring", "Note"]
+image: "software-engineering-at-google-note-01-cover.png"
+categories: ["Note", "软件工程"]
 ---
 
 [Software Engineering at Google](https://qiangmzsx.github.io/Software-Engineering-at-Google/#/zh-cn/Chapter-1_What_Is_Software_Engineering/Chapter-1_What_Is_Software_Engineering)
