@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-go@v2.1.2
       
       - name: Hugo setup
-        uses: peaceiris/actions-hugo@v2.4.13
+        uses: peaceiris/actions-hugo@v2.6.0
     
       - name: Install Dependencies
         run: npm install --dev @babel/cli @babel/core @babel/preset-env browserslist clipboard cssnano postcss-cli postcss-import postcss-mixins postcss-nested postcss-preset-env postcss-url
