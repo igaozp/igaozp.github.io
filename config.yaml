@@ -1,13 +1,13 @@
-baseurl: https://andornot.xyz
+baseurl: https://blog.igaozp.me
 languageCode: en-us
 theme: hugo-theme-stack
 paginate: 5
-title: AND OR NOT
+title: igaozp's Blog
 
 languages:
     zh-cn:
         languageName: 中文
-        title: 与或非 - AND OR NOT
+        title: igaozp's Blog
         weight: 2
 
 # Change it to your Disqus shortname before using
