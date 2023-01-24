@@ -1,6 +1,6 @@
 ---
 title: "Books"
-date: 2023-01-22
+date: 2023-01-24
 layout: "books"
 slug: "books"
 menu:
@@ -19,6 +19,7 @@ menu:
 - 《SRE：Google 运维解密》
 
 ## 读过的一些书
+- 《怠倦社会》
 - 《中国历代政治得失》
 - 《通往奴役之路》
 - 《纳瓦尔宝典》
