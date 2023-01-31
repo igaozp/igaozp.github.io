@@ -1,5 +1,5 @@
 ---
-title: "如何给 Turborepo 的项目添加新应用？"
+title: "如何给基于 Turborepo 的项目添加新应用？"
 date: 2023-01-30T21:30:10+08:00
 draft: false
 tags: ["Turborepo", "pnpm", "Vue"]
