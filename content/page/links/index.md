@@ -13,7 +13,7 @@ links:
   - title: 改革历史上惨痛的挫折：88年物价闯关始末
     website: https://zhuanlan.zhihu.com/p/222946352
   - title: Automation Isn’t the Cause of Unemployment — Capitalism Just Can’t Generate Enough Jobs
-  - website: https://jacobin.com/2023/02/automation-unemployment-capitalism-jobs-post-scarcity-stagnation
+    website: https://jacobin.com/2023/02/automation-unemployment-capitalism-jobs-post-scarcity-stagnation
 menu:
     main: 
         weight: -50
