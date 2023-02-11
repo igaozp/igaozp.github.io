@@ -10,10 +10,10 @@ links:
   - title: Ergodicity, what's it mean
     description: Ensemble averages and time averages
     website: https://avoidboringpeople.substack.com/p/ergodicity-whats-it-mean
-  - title: 冠状病毒之后的世界
-    website: https://www.ruanyifeng.com/blog/2020/03/the-world-after-coronavirus.html
   - title: 改革历史上惨痛的挫折：88年物价闯关始末
     website: https://zhuanlan.zhihu.com/p/222946352
+  - title: Automation Isn’t the Cause of Unemployment — Capitalism Just Can’t Generate Enough Jobs
+  - website: https://jacobin.com/2023/02/automation-unemployment-capitalism-jobs-post-scarcity-stagnation
 menu:
     main: 
         weight: -50
@@ -25,4 +25,4 @@ comments: false
 
 一些有用的链接，挑选 5 个当前我认为「最有价值」的链接，不定期更换。
 
-更新于 2022-08-26
+更新于 2023-02-11
