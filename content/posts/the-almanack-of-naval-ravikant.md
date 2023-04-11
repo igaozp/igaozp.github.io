@@ -2,7 +2,7 @@
 title: "📖 纳瓦尔宝典 The Almanack of Naval Ravikant: A Guide to Wealth and Happiness"
 date: 2023-04-11T22:11:10+08:00
 draft: false
-tags: ["Turborepo", "pnpm", "Vue"]
+tags: ["Note"]
 image: "7_The_Origin_of_the_World_by_Borondo_by_Naman_Saraiya.jpg"
 ---
 
