@@ -33,7 +33,7 @@ params:
         - posts
     featuredImageField: image
     rssFullContent: true
-    favicon: /favicon.png
+    favicon: /favicon.svg
 
     footer:
         since: 2016
