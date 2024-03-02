@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>配置 on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/%E9%85%8D%E7%BD%AE/</link><description>Recent content in 配置 on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 01 Jan 2022 10:22:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/%E9%85%8D%E7%BD%AE/index.xml" rel="self" type="application/rss+xml"/><item><title>IdeaVim 自用配置分享</title><link>https://andornot.xyz/posts/ideavim-personal-config/</link><pubDate>Sat, 01 Jan 2022 10:22:10 +0800</pubDate><guid>https://andornot.xyz/posts/ideavim-personal-config/</guid><description>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;span class="lnt">81
+&lt;/span>&lt;span class="lnt">82
+&lt;/span>&lt;span class="lnt">83
+&lt;/span>&lt;span class="lnt">84
+&lt;/span>&lt;span class="lnt">85
+&lt;/span>&lt;span class="lnt">86
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">let&lt;/span> &lt;span class="n">mapleader&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34; &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">clipboard&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">unnamedplus&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">unnamed&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">hlsearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">incsearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">ignorecase&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">smartcase&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">showmode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">number&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">scrolloff&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">history&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">100000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">multiple&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">cursors&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">commentary&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">easymotion&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">exchange&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">surround&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">ideajoin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">clipboard&lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="n">ideaput&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">ideamarks&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">keep&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">english&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">in&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">normal&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">and&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">restore&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">in&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">insert&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">relativenumber&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">highlightedyank&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">NERDTree&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">showmode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">so&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">5&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">incsearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">nu&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">idearefactormode&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">keep&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">set&lt;/span> &lt;span class="n">ideavimsupport&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">let&lt;/span> &lt;span class="n">g&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">EasyMotion_override_acejump&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">let&lt;/span> &lt;span class="n">g&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">argtextobj_pairs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;[:],(:),&amp;lt;:&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">SelectAll&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">Cut&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">Copy&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">z&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">Undo&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">map&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">Paste&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">esc&lt;/span>&lt;span class="o">&amp;gt;&amp;lt;&lt;/span>&lt;span class="n">esc&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">noh&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">gd&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoDeclaration&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="p">,&lt;/span>&lt;span class="n">e&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">SearchEverywhere&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="p">,&lt;/span>&lt;span class="n">g&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">FindInPath&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="p">,&lt;/span>&lt;span class="n">s&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">FileStructurePopup&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">gd&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoDeclaration&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">gs&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoSuperMethod&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">gi&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoImplementation&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">gb&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">JumpToLastChange&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">U&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">FindUsages&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">R&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">RenameElement&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ReformatCode&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vnoremap&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ReformatCode&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="p">[]&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">OptimizeImports&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vnoremap&lt;/span> &lt;span class="p">[]&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">OptimizeImports&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="n">cc&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">CommentByLineComment&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vnoremap&lt;/span> &lt;span class="n">cc&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">CommentByLineComment&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">C&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ShowIntentionActions&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoAction&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vnoremap&lt;/span> &lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoAction&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">xnoremap&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="s2">&amp;#34;0p&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">xnoremap&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="s2">&amp;#34;_dP&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34; 搜索文件相关&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zc&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoClass&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">vnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zc&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoClass&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">za&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoAction&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zh&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">RecentChangedFiles&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zf&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">GotoFile&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zd&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ActivateDebugToolWindow&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zr&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ActivateRunToolWindow&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zs&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ShelvedChangesToolbar&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zt&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ActivateTODOToolWindow&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zv&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ActivateVersionControlToolWindow&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zb&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ShowBookmarks&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">zp&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">ActivateProjectToolWindow&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">nnoremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Leader&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">o&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">C&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">u&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">RecentProjectListGroup&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">noremap&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Space&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="p">:&lt;/span>&lt;span class="n">action&lt;/span> &lt;span class="n">SelectInProjectView&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">CR&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

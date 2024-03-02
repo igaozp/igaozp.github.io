@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bash on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/bash/</link><description>Recent content in Bash on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 13 Sep 2018 12:05:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/bash/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 常用命令简记</title><link>https://andornot.xyz/posts/linux-command/</link><pubDate>Thu, 13 Sep 2018 12:05:10 +0800</pubDate><guid>https://andornot.xyz/posts/linux-command/</guid><description>&lt;p>系统信息显示&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">date &lt;span class="c1"># 当前日期时间 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cal &lt;span class="c1"># 日历&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">uptime &lt;span class="c1"># 当前更新的时间&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">w &lt;span class="c1"># 在线用户信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">whoami &lt;span class="c1"># 当前登录用户的用户名&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">finger user &lt;span class="c1"># 关于user用户的信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">uname -a &lt;span class="c1"># 内核信息 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat /proc/cpuinfo &lt;span class="c1"># CPU信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cat /proc/meminfo &lt;span class="c1"># 内存信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">man &lt;span class="nb">command&lt;/span> &lt;span class="c1"># 查找关于command命令的手册&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">df &lt;span class="c1"># 磁盘使用情况&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">du &lt;span class="c1"># 当前目录下文件的空间占用情况&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">free &lt;span class="c1"># 内存和交换空间的使用情况&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">whereis app &lt;span class="c1"># app可能出现的位置&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">which app &lt;span class="c1"># app运行时默认的运行位置&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>文件解压缩&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">tar cf file.tar files &lt;span class="c1"># 将files文件夹或文件, 打包为file.tar&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar xf file.tar &lt;span class="c1"># 解压file.tar&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar czf file.tar.gz files &lt;span class="c1"># 使用gzip创建压缩文件file.tar.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar xzf file.tar.gz &lt;span class="c1"># 使用gzip解压file.tar.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar cjf file.tar.bz2 &lt;span class="c1"># 使用bzip2创建压缩文件file.tar.bz2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar xjf file.tar.bz2 &lt;span class="c1"># 使用bzip2解压file.tar.bz2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gzip file &lt;span class="c1"># 将file文件压缩并重命名为file.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gzip -d file.gz &lt;span class="c1"># 解压缩file.gz&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>进程管理&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ps &lt;span class="c1"># 显示当前活动进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">top &lt;span class="c1"># 显示所有运行中的进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">kill&lt;/span> pid &lt;span class="c1"># 终止ID为pid的进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">killall proc &lt;span class="c1"># 终止所有名为proc*的进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">bg&lt;/span> &lt;span class="c1"># 列出已终止或后台运行的进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">fg&lt;/span> &lt;span class="c1"># 将最近的后台任务调至前台&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">fg&lt;/span> n &lt;span class="c1"># 将任务n调至前台&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>网络相关&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ping host &lt;span class="c1"># ping主机地址并显示结果&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">whois domain &lt;span class="c1"># 获取domain域名的whois信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dig domain &lt;span class="c1"># 获取domain域名的DNS信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dig -x host &lt;span class="c1"># 反向查询host主机&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget file &lt;span class="c1"># 下载文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget -c file &lt;span class="c1"># 继续已停止的下载&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装软件&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 从源码安装软件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./configure
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">make
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">make install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dpkg -i pkg.deb &lt;span class="c1"># 安装deb格式的软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpm -Uvh pkg.rpm &lt;span class="c1"># 安装rpm格式的软件包&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>搜索相关&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">grep pattern files &lt;span class="c1"># 查找匹配pattern模式的文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grep -r pattern dir &lt;span class="c1"># 在目录下递归查找匹配pattern模式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">command&lt;/span> &lt;span class="p">|&lt;/span> grep pattern &lt;span class="c1"># 在command命令的输出中查找匹配pattern的信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">locate file &lt;span class="c1"># 查找file文件的所有实例&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>文件权限&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chmod octal file &lt;span class="c1"># 为文件设置octal数字所代表的权限&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">777&lt;/span> file &lt;span class="c1"># 所有人可以完全控制file文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chmod &lt;span class="m">755&lt;/span> &lt;span class="c1"># 文件创建者可以完全控制file文件, 组内成员和其他人只能读取和执行&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4:读取&lt;span class="o">(&lt;/span>r&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2:写入&lt;span class="o">(&lt;/span>w&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1:可执行&lt;span class="o">(&lt;/span>x&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>文件相关&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ls &lt;span class="c1"># 列出目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls -al &lt;span class="c1"># 列出所有文件目录的信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> dir &lt;span class="c1"># 切换到dir目录下&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> &lt;span class="c1"># 切换到home目录下&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">pwd&lt;/span> &lt;span class="c1"># 显示当前目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir dir &lt;span class="c1"># 创建目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm file &lt;span class="c1"># 删除file文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -r dir &lt;span class="c1"># 删除dir目录下的内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -f file &lt;span class="c1"># 强制删除file文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -rf dir &lt;span class="c1"># 强制删除dir目录下的内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp file1 file2 &lt;span class="c1"># 复制文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cp -r dir1 dir2 &lt;span class="c1"># 复制文件夹&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mv file1 file2 &lt;span class="c1"># 重命名文件或移动文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ln -s file link &lt;span class="c1"># 创建符号连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch file &lt;span class="c1"># 创建或更新文件&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">more file &lt;span class="c1"># 输出文件内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">head file &lt;span class="c1"># 输出文件前10行的内容&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tail file &lt;span class="c1"># 输出文件后10行的内容&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
