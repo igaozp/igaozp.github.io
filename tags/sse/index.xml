@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SSE on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/sse/</link><description>Recent content in SSE on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 29 Dec 2021 10:45:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/sse/index.xml" rel="self" type="application/rss+xml"/><item><title>Spring Boot 中实现服务端主动数据推送</title><link>https://andornot.xyz/posts/spring-boot-json-stream/</link><pubDate>Wed, 29 Dec 2021 10:45:10 +0800</pubDate><guid>https://andornot.xyz/posts/spring-boot-json-stream/</guid><description>&lt;p>在日常开发中通常使用 &lt;code>WebSocket&lt;/code> 实现服务端的主动地数据推送，这里简单介绍两种其他的数据推送方案，&lt;code>ndjson&lt;/code> 和 &lt;code>SSE&lt;/code>。&lt;/p>
+&lt;h2 id="ndjson">ndjson
+&lt;/h2>&lt;p>&lt;strong>ndjson&lt;/strong> 全称 &lt;strong>Newline Delimited JSON&lt;/strong>，即使用换行符分割的 JSON，同时能够保证每一行的内容都是一个完整的 JSON。这里使用 ndjson 并不是因为它可以实现服务端数据推送，而是凭借 &lt;strong>ndjson&lt;/strong> 的数据格式的特性，作为服务端的 JSON 数据流的数据输出，来更好地帮助我们实现数据推送的效果。&lt;/p>
+&lt;p>这里使用 &lt;strong>Spring Boot&lt;/strong> 作为基础的服务端框架，简单演示一下相关代码及功能。首先要确保项目依赖中包含 &lt;code>spring-boot-starter-webflux&lt;/code> 依赖包。&lt;/p>
+&lt;p>代码示例&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@GetMapping&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">value&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;ndjson&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">produces&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">MediaType&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">APPLICATION_NDJSON_VALUE&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">ndjson&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dataStream&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">dataStream&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">interval&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Duration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">ofSeconds&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">take&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Instant&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">now&lt;/span>&lt;span class="p">()));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>代码中定义了一个私有方法用来生成数据流，效果是每隔 1 秒生成一条数据。在 &lt;code>@GetMapping&lt;/code>中指定了 &lt;code>MediaType.APPLICATION_NDJSON_VALUE&lt;/code> 作为数据的响应格式。&lt;/p>
+&lt;h2 id="sse">SSE
+&lt;/h2>&lt;p>&lt;strong>SSE&lt;/strong> 全称 &lt;strong>Server-sent events&lt;/strong>，即服务器发送事件，服务端可使用 &lt;strong>SSE&lt;/strong> 生成相应的数据流。&lt;/p>
+&lt;p>代码示例，同样需要 &lt;strong>WebFlux&lt;/strong> 支持。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@GetMapping&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">value&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;sse&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">produces&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">MediaType&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">TEXT_EVENT_STREAM_VALUE&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">sse&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dataStream&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">dataStream&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Flux&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">interval&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Duration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">ofSeconds&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">take&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Data&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Instant&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">now&lt;/span>&lt;span class="p">()));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>与 &lt;strong>ndjson&lt;/strong> 方案唯一的不同是，数据响应的格式替换为了&lt;code>MediaType.TEXT_EVENT_STREAM_VALUE&lt;/code>。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>虽然 &lt;strong>ndjson&lt;/strong> 和 &lt;strong>SSE&lt;/strong> 方案都可以实现服务端的数据推送，但这两种的数据通信都是单向通信，只能从服务端到客户端，无法实现双向通信，需要根据自身的场景需要酌情考虑使用。&lt;/p>
+&lt;p>项目的完整代码可参考 &lt;a class="link" href="https://github.com/igaozp/surabaya/blob/f8cc3573759ac22f63801e54edde563f6706a1ec/spring/src/main/java/xyz/andornot/controller/StreamJsonController.java" target="_blank" rel="noopener"
+>StreamJsonController&lt;/a>。&lt;/p>
+&lt;h2 id="参考内容">参考内容
+&lt;/h2>&lt;p>&lt;a class="link" href="https://nurkiewicz.com/2021/08/json-streaming-in-webflux.html" target="_blank" rel="noopener"
+>https://nurkiewicz.com/2021/08/json-streaming-in-webflux.html&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html" target="_blank" rel="noopener"
+>https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html&lt;/a>&lt;/p></description></item></channel></rss>

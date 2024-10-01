@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pnpm on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/pnpm/</link><description>Recent content in Pnpm on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 30 Jan 2023 21:30:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/pnpm/index.xml" rel="self" type="application/rss+xml"/><item><title>如何给基于 Turborepo 的项目添加新应用？</title><link>https://andornot.xyz/posts/how-to-add-a-new-application-to-my-turborepo-project/</link><pubDate>Mon, 30 Jan 2023 21:30:10 +0800</pubDate><guid>https://andornot.xyz/posts/how-to-add-a-new-application-to-my-turborepo-project/</guid><description>&lt;img src="https://andornot.xyz/allison-saeng-u5nuXl4_deQ-unsplash.jpg" alt="Featured image of post 如何给基于 Turborepo 的项目添加新应用？" />&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>阅读本文章，需要你：&lt;/p>
+&lt;ol>
+&lt;li>已经了解 &lt;strong>Turborepo&lt;/strong> 是什么？&lt;/li>
+&lt;li>已经使用 &lt;strong>Turborepo&lt;/strong> 完成模板项目的初始化&lt;/li>
+&lt;li>不知道怎么再已有的项目中添加新的应用&lt;/li>
+&lt;/ol>
+&lt;h2 id="基础概念">基础概念
+&lt;/h2>&lt;p>想要在项目中添加新的应用，我们需要先看一下当前的项目目录结构。我们使用 &lt;strong>Turborepo&lt;/strong> 初始化的项目中，会包含 &lt;code>apps&lt;/code> 和 &lt;code>packages&lt;/code> 目录。根据官方文档描述，这是一个约定的目录结构，简单来说：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>apps&lt;/code> 目录应该包含我们通常开发的可启动的应用程序，例如 &lt;strong>Next.js&lt;/strong> 或 &lt;strong>Svelte&lt;/strong> 应用程序。&lt;/li>
+&lt;li>&lt;code>packages&lt;/code> 目录应该包含被其他应用依赖的包，一般是公共的模块。&lt;/li>
+&lt;/ul>
+&lt;p>所以，如果我们要添加新的应用，最终的效果是要体现在 &lt;strong>apps&lt;/strong> 目录中的。经过相关的查询和摸索，添加新应用需要如下的操作：&lt;/p>
+&lt;ol>
+&lt;li>在 &lt;code>apps&lt;/code> 目录下，新建新项目的目录，目录名称不能与其他应用重复&lt;/li>
+&lt;li>在新的应用目录下，完成新项目的初始化&lt;/li>
+&lt;li>在整个项目的根目录下，完成整个项目的更新&lt;/li>
+&lt;/ol>
+&lt;h2 id="示例">示例
+&lt;/h2>&lt;p>下面是以添加 &lt;strong>Vue&lt;/strong> 应用为示例，展示整个操作流程：&lt;/p>
+&lt;ol>
+&lt;li>在 &lt;code>apps&lt;/code> 目录下新建文件夹，目录名称以 &lt;code>vue-learn&lt;/code> 作为示例。&lt;/li>
+&lt;li>在 &lt;code>vue-learn&lt;/code> 目录下，执行 &lt;strong>Vue&lt;/strong> 应用的初始化脚本，这里使用 &lt;code>pnpm create vue@latest&lt;/code> 来初始化应用，根据相关提示完成应用的初始化。初始化完成后，目录中应该包含 &lt;strong>Vue&lt;/strong> 项目的正常目录结构和模板代码、配置。&lt;/li>
+&lt;li>在整个 &lt;strong>Turborepo&lt;/strong> 项目的根目录中（apps 目录的上一层），执行 &lt;code>pnpm install&lt;/code>，完成整体项目的更新。&lt;/li>
+&lt;li>使用 &lt;strong>Turborepo&lt;/strong> 项目中 &lt;code>package.json&lt;/code> 自带的 &lt;code>dev&lt;/code> 脚本，或者使用 &lt;code>turbo run dev --parallel&lt;/code> 命令，校验新增的应用能否正常启动，如果新增应用的前端页面可以正常展示则完成整个新建流程。&lt;/li>
+&lt;/ol>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>这是只是针对笔者在 Turborepo 使用过程中遇到问题的一点简单方案。其中一些概念解释和操作并不能保证是合理和正确的，只是经过自身简单的理解和实践总结的，有条件的尽量先查阅最新的官方文档和搜索信息。&lt;/p></description></item></channel></rss>
