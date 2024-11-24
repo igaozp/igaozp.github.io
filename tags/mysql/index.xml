@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MySQL on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/mysql/</link><description>Recent content in MySQL on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 19 Aug 2020 21:25:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>高性能 MySQL 读书笔记 - 架构和历史</title><link>https://andornot.xyz/posts/high-performance-mysql-note-01/</link><pubDate>Wed, 19 Aug 2020 21:25:10 +0800</pubDate><guid>https://andornot.xyz/posts/high-performance-mysql-note-01/</guid><description>&lt;h1 id="并发控制">并发控制
+&lt;/h1>&lt;p>MySQL 中只要存在多个查询同时修改数据的场景，就会产生并发控制的问题。MySQL 通常在两个层面进行并发控制，一是&lt;strong>服务器&lt;/strong>层面，二是&lt;strong>存储引擎&lt;/strong>层面。&lt;/p>
+&lt;h2 id="读写锁">读写锁
+&lt;/h2>&lt;p>并发控制中一类经典的问题就是：&lt;strong>如何避免对同一条数据进行并发地修改和查询操作，以避免产生不可预测的结果。&lt;/strong>&lt;/p>
+&lt;p>这里可以通过构建一个锁系统来解决，这个系统有两种锁构成：共享锁（&lt;code>shared lock&lt;/code>）和排他锁（&lt;code>exclusive lock&lt;/code>），也被称为读锁（&lt;code>read lock&lt;/code>）和写锁（&lt;code>write lock&lt;/code>）。&lt;/p>
+&lt;p>通常读锁是共享的，意味着多个客户端可以同时读取同一数据资源，因为读操作不会对数据产生副作用，数据不会产生变化。
+而写锁是排他的、非共享的，一个写锁会阻塞其他的写锁和读锁，只有这样才能保证其他的写操作和当前的写操作不会产生冲突，读操作不会读取到正在写入的内容。&lt;/p>
+&lt;p>这些锁定操作在 MySQL 内部频繁地发生着，MySQL 会自动管理这些锁的锁定和释放，对我们开发者来说是透明的，无需去干预。&lt;/p>
+&lt;h2 id="锁粒度">锁粒度
+&lt;/h2>&lt;p>提高共享资源并发性的一种方式是让锁定的对象更具有选择性，尽可能对数据精确地锁定，锁定的数据越少，系统的整体并发程度越高。
+但是锁的管理也需要消耗系统资源，为了精确地锁定资源系统可能会额外消耗资源去检索定位数据，系统的整体性能也会收到影响。&lt;/p>
+&lt;p>所以需要一种策略去&lt;strong>平衡锁的开销和数据的安全性&lt;/strong>。&lt;/p>
+&lt;h3 id="表锁">表锁
+&lt;/h3>&lt;p>表锁是 MySQL 中最基本的锁策略，且性能开销最小。
+用户对表进行写操作时（插入、删除、更新）需要获得写锁锁定整张表，阻塞其他用户对该表的所有读写操作。
+当没有写锁时才能获取到读锁，且读锁之间不会相互阻塞。另外，写锁比读锁有着更高的优先级。&lt;/p>
+&lt;h3 id="行级锁">行级锁
+&lt;/h3>&lt;p>行级锁能够最大程度地支持并发处理，同时也意味着在锁处理上会带来最大程度的性能开销。与表锁不同行级锁只能由存储引擎来提供实现。&lt;/p>
+&lt;h1 id="事务">事务
+&lt;/h1>&lt;p>说到数据库就不能不提事务，简单来说事务内的语句要么全部执行成功，要么全部失败。&lt;/p>
+&lt;p>事务必须具备原子性（&lt;code>atomicity&lt;/code>）、一致性（&lt;code>consistency&lt;/code>）、隔离性（&lt;code>isolation&lt;/code>）、持久性（&lt;code>durability&lt;/code>），即&lt;strong>ACID&lt;/strong>。&lt;/p>
+&lt;p>MySQL 默认采用自动提交事务，即每个查询都被当作一个事务执行并提交。&lt;/p>
+&lt;h2 id="隔离级别">隔离级别
+&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>隔离级别&lt;/th>
+&lt;th>脏读可能性&lt;/th>
+&lt;th>不可重复读可能性&lt;/th>
+&lt;th>幻读可能性&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>READ UNCOMMITTED&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>READ COMMITTED&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>REPEATABLE READ (DEFAULT)&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>YES&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SERIALIZABLE&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;td>NO&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>何为脏读，简单来说指一个事务中访问到了另外一个事务未提交的数据。&lt;/p>
+&lt;p>又何为幻读，即一个事务读取两次，但得到的记录条数不一致，如果记录的数据不一致，那则称为不可重复读。&lt;/p>
+&lt;h2 id="死锁">死锁
+&lt;/h2>&lt;p>死锁是指多个事务在同一资源上相互占用，并且请求锁定对方占用的资源，从而导致恶性循环的现象。&lt;/p>
+&lt;p>&lt;code>InnoDB&lt;/code> 目前解决死锁的方法为：&lt;strong>将持有最少行级排他锁的事务进行回滚&lt;/strong>。&lt;/p>
+&lt;h1 id="多版本并发控制">多版本并发控制
+&lt;/h1>&lt;p>多版本并发控制（&lt;code>MVCC&lt;/code>）是行级锁的一个变种，在很多情况下避免了加锁操作，且写操作只锁定必要的行，&lt;code>MVCC&lt;/code> 通过保存数据在某个时间点的快照来实现。&lt;/p>
+&lt;p>&lt;code>MVCC&lt;/code> 一般由乐观锁（&lt;code>optimistic lock&lt;/code>）和悲观锁（&lt;code>pessimistic lock&lt;/code>）来控制。&lt;/p>
+&lt;p>乐观锁假设不会发生并发冲突，只在提交操作时检查数据是否被其他人修改过，适用于读多写少的应用场景。&lt;/p>
+&lt;p>悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作，每次在读取数据的时候都会上锁。乐观锁大多使用版本号进行控制。&lt;/p></description></item></channel></rss>
