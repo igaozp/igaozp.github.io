@@ -52,8 +52,8 @@ params:
             src: img/avatar.png
 
     article:
-        math: false
-        toc: true
+        math: true
+        toc: false
         readingTime: true
         license:
             enabled: true
@@ -155,7 +155,7 @@ params:
     opengraph:
         twitter:
             # Your Twitter username
-            site:
+            site: pzoagi
 
             # Available values: summary, summary_large_image
             card: summary_large_image
