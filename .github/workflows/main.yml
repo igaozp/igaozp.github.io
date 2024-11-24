@@ -41,7 +41,7 @@ jobs:
 
       - name: Build
         run:  |
-          hugo -v --gc --minify
+          hugo --gc --minify
           echo 'andornot.xyz' > public/CNAME
 
       - name: Deploy
