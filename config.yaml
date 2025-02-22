@@ -1,8 +1,9 @@
 baseurl: https://andornot.xyz
 languageCode: en-us
 theme: hugo-theme-stack
-paginate: 5
 title: AND OR NOT
+pagination:
+    pagerSize: 5
 
 languages:
     zh-cn:
