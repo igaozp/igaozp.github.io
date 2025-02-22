@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>JConsole on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/jconsole/</link><description>Recent content in JConsole on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Jun 2021 11:16:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/jconsole/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 JConsole 简单排查死锁线程</title><link>https://andornot.xyz/posts/jconsole-sample-usage/</link><pubDate>Sun, 27 Jun 2021 11:16:10 +0800</pubDate><guid>https://andornot.xyz/posts/jconsole-sample-usage/</guid><description>&lt;p>最近在工作中遇到了 HTTP 请求长时间未响应的情况，初步判断是代码问题导致产生死锁，遂简单学习了下 JDK 中自带的 JConsole 工具。
+以 Windows 为例，工具存放在 JDK 目录下的 bin/jconsole.exe，双击运行即可。&lt;/p>
+&lt;p>使用步骤：&lt;/p>
+&lt;ol>
+&lt;li>新建连接，选择本地或远程的应用进程，并连接。&lt;/li>
+&lt;li>切换至线程选项卡。&lt;/li>
+&lt;li>点击左下方的「检测死锁」按钮。如果存在死锁进程，会展示对应的线程信息，同时展示线程死锁相关的堆栈信息，排查堆栈信息即可找到问题根源。&lt;/li>
+&lt;/ol></description></item></channel></rss>

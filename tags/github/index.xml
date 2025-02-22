@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitHub on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/github/</link><description>Recent content in GitHub on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 09 Sep 2020 21:22:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>GitHub Star 仓库管理利器 - stargazed</title><link>https://andornot.xyz/posts/github-starred-repositories-management-tools-stargazed/</link><pubDate>Wed, 09 Sep 2020 21:22:10 +0800</pubDate><guid>https://andornot.xyz/posts/github-starred-repositories-management-tools-stargazed/</guid><description>&lt;p>个人在 GitHub 收藏了非常多的开源项目仓库，到目前为止收藏的项目大概 3000+，这些项目检索起来非常繁琐，导致一些收藏的项目由于检索效率的问题没有利用起来。&lt;/p>
+&lt;p>所幸无意间发现了一个名为 &lt;a class="link" href="https://github.com/abhijithvijayan/stargazed" target="_blank" rel="noopener"
+>stargazed&lt;/a> 工具，可以将 GitHub 用户收藏过的项目，进行分类并输出到 Markdown 文件中。
+stargazed 会将项目按语言分类并生成目录，方便跳转查看不同编程语言的项目，并且生成的项目条目包括项目名称、项目地址、项目描述、作者等信息，可以非常方便地检索。&lt;/p>
+&lt;h3 id="如何使用">如何使用
+&lt;/h3>&lt;p>该工具需要用户提供提供一个 GitHub 仓库，用来存储生成的 Markdown 文件。支持通过 GitHub 的 Personal access tokens 来自动创建仓库，同时支持 GitHub Actions 来实现定时更新文件信息。&lt;/p>
+&lt;p>使用该工具需要安装 Node.js 环境，安装命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm install -g stargazed
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用命令如下，需要将 GITHUB_USERNAME 和 GITHUB-TOKEN 替换为自己的信息，运行成功后会在自动在 awesome-stars 仓库中生成文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">stargazed --username GITHUB_USERNAME --token &lt;span class="s2">&amp;#34;GITHUB-TOKEN&amp;#34;&lt;/span> --repository &lt;span class="s2">&amp;#34;awesome-stars&amp;#34;&lt;/span> --sort --workflow
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>上述命令会自动创建 GitHub Actions 配置文件，会定时更新生成的文件，即第一次执行后后续可以无需再次介入。&lt;/p>
+&lt;p>关于项目的其他信息可以访问 &lt;a class="link" href="https://github.com/abhijithvijayan/stargazed" target="_blank" rel="noopener"
+>https://github.com/abhijithvijayan/stargazed&lt;/a> 进行查看。&lt;/p></description></item></channel></rss>

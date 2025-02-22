@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>翻译 on 与或非 - AND OR NOT</title><link>https://andornot.xyz/tags/%E7%BF%BB%E8%AF%91/</link><description>Recent content in 翻译 on 与或非 - AND OR NOT</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 06 Mar 2021 11:01:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml"/><item><title>[译] 分布式系统中的模式：High-Water Mark</title><link>https://andornot.xyz/posts/high-water-mark/</link><pubDate>Sat, 06 Mar 2021 11:01:10 +0800</pubDate><guid>https://andornot.xyz/posts/high-water-mark/</guid><description>&lt;p>该文章翻译自 Martin Fowler 官方网站上的系列文章，原文链接 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/" target="_blank" rel="noopener"
+>Patterns of Distributed Systems&lt;/a>，
+此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用「模式」，这些「模式」对我们普通开发者了解学习分布式系统有很好的指导意义。&lt;/p>
+&lt;p>本篇文章原作者介绍了分布式系统中的 High-Water Mark 相关的概念及一些场景，
+原文链接 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html" target="_blank" rel="noopener"
+>High-Water Mark&lt;/a> 。&lt;/p>
+&lt;p>注：高水位线（High-Water Mark）通常是指投资基金或账户达到的最高价值峰值。
+这个词通常用于基金经理的报酬，而基金经理的报酬是基于业绩的。高水位线确保基金经理不会因为业绩不佳而获得大笔报酬。&lt;/p>
+&lt;h2 id="正文">正文
+&lt;/h2>&lt;blockquote>
+&lt;p>在预写式日志（Write Ahead Log）中，索引展现最新的成功复制的数据。&lt;/p>&lt;/blockquote>
+&lt;p>预写式日志（WAL）模式用于恢复服务器崩溃和重启后的服务状态。但在服务器故障时，预写日志还不足以提供可用性。
+如果单个服务器发生故障，那么在服务器重启之前，客户端将无法运转。为了获得一个更可用的系统，我们可以将日志复制到多台服务器上。
+使用 Leader and Followers 模式，Leader 将其所有的日志条目复制到 Followers 上。
+现在如果 Leader 崩溃，可以选出一个新的 Leader，客户端大多可以继续像以前一样使用集群服务。但还是有几个场景会出现问题：&lt;/p>
+&lt;ul>
+&lt;li>Leader 在给任意一个 Follower 发送日志条目之前崩溃。&lt;/li>
+&lt;li>Leader 在向小部分 Follower 发送日志条目之后崩溃，但无法继续将日志发送给大部分 Follower。&lt;/li>
+&lt;/ul>
+&lt;p>在这些出现错误的场景下，有些 Follower 的日志中可能缺少条目，有些 Follower 的日志条目可能比其他 Follower 多。
+所以，对于每个 Follower 来说，知道哪部分的日志是安全的，并可以提供给客户端服务就变得非常重要。&lt;/p>
+&lt;h3 id="解决方案">解决方案
+&lt;/h3>&lt;p>高水位标记（high-water mark）是日志文件中的一个索引，它记录了已知已成功复制到一定数量（符合 Quorum 机制的数量）的 Follower 的最后一个日志条目。
+在复制过程中，Leader 也会将高水位标记传递给它的 Followers。群集中的所有服务器应仅传输或更新低于高水位线标记的数据给客户端。&lt;/p>
+&lt;p>&lt;img src="https://andornot.xyz/posts/high-water-mark/highwatermark-sequence.png"
+width="960"
+height="540"
+srcset="https://andornot.xyz/posts/high-water-mark/highwatermark-sequence_hu_6d77569d7edda3a9.png 480w, https://andornot.xyz/posts/high-water-mark/highwatermark-sequence_hu_c4b0ba2c556d8127.png 1024w"
+loading="lazy"
+alt="highwatermark 序列图"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>对于每个日志条目，Leader 将其附加到其本地的预写日志中，然后将其发送给所有的 Follower。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">appendAndReplicate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">byte&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lastLogEntryIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">appendToLocalLog&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Replicating log entries from index &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lastLogEntryIndex&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">replicateOnFollowers&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">lastLogEntryIndex&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lastLogEntryIndex&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">replicateOnFollowers&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entryAtIndex&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">FollowerHandler&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">follower&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">followers&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">replicateOn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">follower&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entryAtIndex&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">//send replication requests to followers&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Follower 处理复制请求，并将日志条目追加到其本地日志中。在成功追加日志条目后，它们会将最新日志条目的索引响应给 Leader。
+响应中还包括服务器当前的 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html" target="_blank" rel="noopener"
+>Generation Clock&lt;/a>。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ReplicationResponse&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">handleReplicationRequest&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ReplicationRequest&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationRequest&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">List&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">WALEntry&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entries&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntries&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">WALEntry&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entries&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Applying log entry &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntryId&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34; in &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">serverId&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">writeEntry&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ReplicationResponse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">SUCCEEDED&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">serverId&lt;/span>&lt;span class="p">(),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getGeneration&lt;/span>&lt;span class="p">(),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getLastLogEntryId&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Leader 在收到响应时，会跟踪复制在每个服务器上的日志索引。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">recordReplicationConfirmedFor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getServerId&lt;/span>&lt;span class="p">(),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getReplicatedLogIndex&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">logIndexAtQuorum&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">computeHighwaterMark&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">logIndexesAtAllServers&lt;/span>&lt;span class="p">(),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">numberOfServers&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">logIndexAtQuorum&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getHighWaterMark&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">var&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">previousHighWaterMark&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getHighWaterMark&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">applyLogAt&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">previousHighWaterMark&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">logIndexAtQuorum&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">replicationState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">setHighWaterMark&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">logIndexAtQuorum&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>高水位线可以通过查看 Follower 的日志索引及 Leader 自身的日志来计算，同时选出在多数服务器中都有的日志索引。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">computeHighwaterMark&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">List&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">serverLogIndexes&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">noOfServers&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">serverLogIndexes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">sort&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="p">::&lt;/span>&lt;span class="n">compareTo&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">serverLogIndexes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">noOfServers&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在 Leader 选举中会出现一个微妙的问题。在任何服务器向客户端发送数据之前，我们必须确保集群中的所有服务器都有一个最新的日志记录。
+这个微妙的问题就是，在向所有的 Follower 传播高水位线之前现有的 Leader 失效。RAFT 的做法是在 Leader 选举成功后，在 Leader 的日志中附加一个 no-op 条目，并且只有在其 Follower 确认这一点后才能为客户端提供服务。在 ZAB 中，新的 Leader 在尝试开始为客户提供服务之前，将其所有条目推送给所有的 Follower。&lt;/p>
+&lt;p>Leader 将高水位线作为常规心跳检测的一部分或作为单独的请求传播给 Followers。然后，Follower 据此设定他们的高水位线。&lt;/p>
+&lt;p>任何客户端都只能读取高水位线前日志条目。超过高水位线的日志条目对客户端来说是不可见的，因为没有确认这些条目是否被复制，
+所以如果 Leader 失效，而其他服务器被选为 Leader，这些日志条目可能无法使用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">WALEntry&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">readEntry&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">index&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">index&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getHighWaterMark&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">throw&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">IllegalArgumentException&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Log entry not available&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">readAt&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">index&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="日志截断">日志截断
+&lt;/h3>&lt;p>当一台服务器在崩溃/重启后加入集群时，其日志中总有可能出现一些冲突的条目。因此，每当一台服务器加入集群时，
+它都会与集群的 Leader 进行检查，以了解日志中哪些条目可能是冲突的。然后，它将日志截断到与 Leader 相匹配的条目，
+然后用随后的条目更新日志，以确保它的日志与集群的其他条目相匹配。&lt;/p>
+&lt;p>考虑下面的例子。客户端发送请求在日志中添加四个条目。Leader 成功复制了三个条目，但在向自己的日志中添加 Entry4 之后失效。
+其中一个 Follower 被选为新的 Leader，并从客户端接收到了更多的条目。当失效的 Leader 再次加入集群时，它的 Entry4 是冲突的。所以它需要截断自己的日志，直到 Entry3，然后添加 Entry5，使日志与集群的其他部分相匹配。&lt;/p>
+&lt;p>Leader 失效：
+&lt;img src="https://andornot.xyz/posts/high-water-mark/leaderfailure.png"
+width="960"
+height="540"
+srcset="https://andornot.xyz/posts/high-water-mark/leaderfailure_hu_67d78f86b9d5d1f6.png 480w, https://andornot.xyz/posts/high-water-mark/leaderfailure_hu_bf8b9ec58e428cbd.png 1024w"
+loading="lazy"
+alt="Leader 失效"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>新 Leader：
+&lt;img src="https://andornot.xyz/posts/high-water-mark/newleader.png"
+width="960"
+height="540"
+srcset="https://andornot.xyz/posts/high-water-mark/newleader_hu_40ccaeb8e42cc03e.png 480w, https://andornot.xyz/posts/high-water-mark/newleader_hu_223f809822bfa30f.png 1024w"
+loading="lazy"
+alt="新 Leader"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>日志截断：
+&lt;img src="https://andornot.xyz/posts/high-water-mark/truncation.png"
+width="960"
+height="540"
+srcset="https://andornot.xyz/posts/high-water-mark/truncation_hu_bdba337b709188bc.png 480w, https://andornot.xyz/posts/high-water-mark/truncation_hu_5bb661e3c3674d85.png 1024w"
+loading="lazy"
+alt="截断"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>任何在暂停后重新启动或重新加入集群的服务器都会找到新的 Leader。然后，它明确询问当前的高水位线，将自己的日志截断到高水位线，
+然后从 Leader 那里得到高水位线以外的所有条目。RAFT 等复制算法有办法通过检查自己日志中的日志条目与请求中的日志条目，
+找出冲突的条目，将日志索引相同但生成时钟较低的条目删除。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">maybeTruncate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ReplicationRequest&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationRequest&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">throws&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">replicationRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">hasNoEntries&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">||&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">isEmpty&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">List&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">WALEntry&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entries&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">replicationRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntries&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">WALEntry&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entries&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getLastLogEntryId&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntryId&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getGeneration&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">readAt&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntryId&lt;/span>&lt;span class="p">()).&lt;/span>&lt;span class="na">getGeneration&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">continue&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">wal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">truncate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">entry&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEntryId&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>支持日志截断的一个简单的实现是保存一个日志索引和文件位置的 MAP。然后可以在给定的索引处对日志进行截断，如下所示：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">truncate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">logIndex&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">throws&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">var&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">filePosition&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">entryOffsets&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">logIndex&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filePosition&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">throw&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">IllegalArgumentException&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;No file position available for logIndex=&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">logIndex&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">fileChannel&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">truncate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">filePosition&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="实际的应用示例">实际的应用示例
+&lt;/h3>&lt;ul>
+&lt;li>所有的共识算法都使用高水位标记的概念来知道何时应用所提出的状态突变，例如在 RAFT 共识算法中，高水位标记被称为 &amp;ldquo;CommitIndex&amp;rdquo;。&lt;/li>
+&lt;li>在 Kafka 复制协议中，维护了一个单独的索引，称为 &amp;ldquo;high-water mark&amp;rdquo;。消费者只能看到高水位标记之前的条目。&lt;/li>
+&lt;li>Apache BookKeeper 有一个「&lt;a class="link" href="https://bookkeeper.apache.org/archives/docs/r4.4.0/bookkeeperProtocol.html" target="_blank" rel="noopener"
+>最后一次添加确认&lt;/a>」的概念，即在 Quorum 的法定人数上成功复制的条目。&lt;/li>
+&lt;/ul></description></item><item><title>[译] 分布式系统中的模式</title><link>https://andornot.xyz/posts/patterns-of-distributed-systems/</link><pubDate>Mon, 21 Sep 2020 10:12:10 +0800</pubDate><guid>https://andornot.xyz/posts/patterns-of-distributed-systems/</guid><description>&lt;p>该文章翻译自 Martin Fowler 官方网站上的系列文章，原文链接 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/" target="_blank" rel="noopener"
+>Patterns of Distributed Systems&lt;/a>，此系列文章以宏观的视角系统地讲述了分布式系统中会遇到的一些问题及其解决方案，并将其归纳总结出相关的通用「模式」，这些「模式」对我们普通开发者了解学习分布式系统有很好的指导意义。&lt;/p>
+&lt;h2 id="正文">正文
+&lt;/h2>&lt;p>分布式系统为编程提出了一系列特殊的挑战。分布式系统通常要求我们持有多个数据副本，同时需要确保这些数据的同步。然而我们并不能依赖于这些服务节点能够可靠地工作，网络延迟很容易导致节点数据出现不一致。尽管如此，许多公司组织还是依靠一系列核心分布式软件来解决数据存储、消息传递、系统管理和（数据）计算能力。这些系统面临着共同的问题，它们可以用类似的方案来解决这些问题。本文将归纳这些解决方案并将其发展为&lt;strong>模式&lt;/strong>，有了这些模式，我们就可以建立起如何更好地理解、交流和讲分布式系统设计的理解。&lt;/p>
+&lt;h2 id="这是关于什么">这是关于什么？
+&lt;/h2>&lt;p>在过去的几个月里，作者一直在 ThoughtWorks 举办分布式系统的研讨会。在举办研讨会时，面临的一个关键挑战是如何将分布式系统的理论关联映射到 &lt;strong>Kafka&lt;/strong> 或 &lt;strong>Cassandra&lt;/strong> 等开源的代码中，同时保持讨论的通用性，以涵盖广泛的解决方案。「模式」的概念提供了一个很好的思路。&lt;/p>
+&lt;p>「模式」结构就其本质而言，允许我们专注于一个特定的问题，并清楚知道为什么需要一个特定的解决方案来解决它。然后，我们可以给出一个代码结构来描述解决方案，这个结构要足够具体，可以描述实际的解决方案，但同时又要足够通用，可以适应足够广的应用场景。模式技术还可以让我们将各种模式连接在一起，构建一个完整的系统。这就为讨论分布式系统的实现提供了一个很好的术语。&lt;/p>
+&lt;p>下面是第一批在主流开源分布式系统中观察到的模式。希望这套模式能对所有的开发者有所帮助。&lt;/p>
+&lt;h3 id="分布式系统---实施的角度">分布式系统 - 实施的角度
+&lt;/h3>&lt;p>今天的企业架构中充满了各种平台和框架，这些平台和框架都是分布式的。如果我们概览一下今天典型的企业架构中使用的框架和平台，它看起来像以下内容：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>框架及平台类型&lt;/th>
+&lt;th>示例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>数据库&lt;/td>
+&lt;td>Cassandra, HBase, Riak&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>消息代理&lt;/td>
+&lt;td>Kafka, Pulsar&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>基础设施&lt;/td>
+&lt;td>Kubernetes, Mesos, Zookeeper, etcd, Consul&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>内存数据库/计算网格&lt;/td>
+&lt;td>Hazelcast, Pivotal Gemfire&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>状态化微服务&lt;/td>
+&lt;td>Akka Actors, Axon&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>文件系统&lt;/td>
+&lt;td>HDFS, Ceph&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>本质上讲这些系统都是「分布式」的。什么叫系统的分布式？有两个方面：&lt;/p>
+&lt;ol>
+&lt;li>它们运行在多台服务器上。一个集群中服务器的数量可以从三台服务器到几千台服务器不等。&lt;/li>
+&lt;li>它们管理数据。所以这些系统本质上是「有状态」的系统。&lt;/li>
+&lt;/ol>
+&lt;p>当多个服务器参与存储数据时，有几种场景会出问题。上述系统都需要解决这些问题。解决这些问题时会有一些反复出现的解决方案。当了解了这些解决方案的一般形式，会更有助于理解这些系统的更广泛的实现，当需要构建新的系统时，就可以起到很好的指导作用。&lt;/p>
+&lt;h4 id="模式">模式
+&lt;/h4>&lt;p>模式是由 Christopher Alexander 提出的概念，在软件界被广泛接受，是用来记录用于构建软件系统的设计结构。模式提供了一种结构化的方式来看待一个问题空间，并且这种方式被广泛认可。使用模式的一个有趣的方式是以模式序列或模式语言的形式将几个模式连接在一起，这为实现一个 &amp;ldquo;整体 &amp;ldquo;或完整的系统提供了一些指导。把分布式系统看成一系列模式，是一个深入了解其实现的有用方法。&lt;/p>
+&lt;h2 id="问题及通用的解决方案">问题及通用的解决方案
+&lt;/h2>&lt;p>当数据存储在多个服务器上时，有这么几种场景可能会导致出错。&lt;/p>
+&lt;h3 id="进程崩溃">进程崩溃
+&lt;/h3>&lt;p>进程随时可能崩溃。无论是由于硬件故障还是软件故障。进程崩溃的方式有很多：&lt;/p>
+&lt;ol>
+&lt;li>它可以被系统管理员关闭进行常规维护。&lt;/li>
+&lt;li>它可以在做一些文件 IO 操作时被杀死，因为磁盘已满或者异常没有得到妥善处理。&lt;/li>
+&lt;li>在云环境中它可能会更加棘手，因为一些其他的随机事件可能会使服务器宕机。&lt;/li>
+&lt;/ol>
+&lt;p>我们的最低要求是，如果进程负责存储数据，那么它们从设计上必须保证存储在服务器上数据的持久性。即使一个进程突然崩溃，也应当保存它已经通知用户成功存储的所有数据。根据访问模式的不同，不同的存储引擎有不同的存储结构，从简单的 &lt;strong>Hash Map&lt;/strong> 到复杂的图存储。由于将数据刷新到磁盘上是最耗时的操作之一，不可能每一次对数据的插入或更新都刷新到磁盘上。所以大多数数据库的内存存储结构只定期向磁盘刷新。这就带来了一个风险，如果进程突然崩溃，未向磁盘刷新的数据都会丢失。&lt;/p>
+&lt;p>一种叫做 &lt;strong>Write-Ahead Log&lt;/strong> 的技术被用来解决这种问题。服务器将每个状态变化作为一个命令存储在硬盘上的一个 append-only 的文件中。文件附加操作一般是一个非常快的操作，所以可以在不影响性能的情况下进行。单一的 log 文件、按顺序追加的特性，使之用来存储每次更新。在服务器启动时，可以重新回放日志，再次建立起服务崩溃前的内存状态。&lt;/p>
+&lt;p>这就提供了一个持久化的保证。即使服务器突然崩溃，然后重新启动，数据也不会丢失。但是在服务器恢复之前，客户端将无法从服务器获取或存储任何数据。所以在服务器故障的情况下，我们缺乏可用性。&lt;/p>
+&lt;p>一个显而易见的解决方案是将数据存储在多个服务器上。因此，我们可以在多个服务器上复制 &lt;strong>Write-Ahead Log&lt;/strong> 日志。&lt;/p>
+&lt;p>当涉及到多个服务器时，需要考虑的故障场景就更多了。&lt;/p>
+&lt;h3 id="网络延迟">网络延迟
+&lt;/h3>&lt;p>在 TCP/IP 协议栈中，在网络上传输消息时造成的延迟并没有上限。它可以根据网络上的负载而变化。例如，一条 1Gbps 的网络链路可能会被一个触发的大数据量的任务所淹没，填满网络缓冲区，会导致一些消息到达服务器的延迟不可预估。&lt;/p>
+&lt;p>这里有两个问题需要解决：&lt;/p>
+&lt;ol>
+&lt;li>某台服务器不能无限期地等待，需要知道另一台服务器是否崩溃了。&lt;/li>
+&lt;li>不应该有两组服务器（提供服务），每组服务器都认为另一组服务器已经失效，因此继续为不同的客户端服务。这就是所谓的&lt;strong>脑裂&lt;/strong>问题。&lt;/li>
+&lt;/ol>
+&lt;p>为了解决第一个问题，每台服务器都会定期向其他服务器发送一个心跳（HeartBeat）消息。如果未收到心跳，就认为发送心跳的服务器是崩溃了。心跳的间隔时间要足够小，以保证不需要花费很多时间来检测服务器的故障。正如我们将在下面看到的那样，在最坏的情况下，服务器可能会启动并运行，考虑到即使服务器出现故障，集群作为一个组仍可以继续提供服务。这样可以确保提供给客户端的服务不会中断。&lt;/p>
+&lt;p>第二个问题是脑裂。在脑裂的情况下，如果两组服务器独立接受（数据）更新，不同的客户端获取并设置了不同的数据，就算脑裂问题解决，也无法自动解决（不同客户端之间数据的）冲突。&lt;/p>
+&lt;p>要想解决脑裂问题，我们必须保证两组服务器，即使相互之间是断开的，也不能独立进行（数据）处理。为了保证这一点，服务器所做的每一个动作，只有在大多数服务器能够确认该动作时，才算操作成功。如果不能获得多数服务器的确认，就不能提供所需的服务，可能有部分客户端无法接收服务（响应），但集群中的服务器（数据）将始终处于一致的状态。达到多数服务器确认的数量称为 Quorum 机制。如何决定 Quorum 机制生效的数量？那是根据集群所能容忍的故障数来决定的。所以，如果我们有一个5个节点的集群，我们需要的机制生效数量是3个。一般来说，如果我们要容忍f次故障，我们需要的集群大小为2f+1。&lt;/p>
+&lt;p>Quorum 机制可以确保我们有足够的数据副本在一部分服务器故障中保存下来。但这还不足以给客户端提供强大的一致性保证。假设一个客户端发起一个写操作，但写操作只在一台服务器上成功。其他服务器仍然有旧的值。当客户端读取值时，如果有最新值的服务器可用，它可能会得到最新的值。但是，如果当客户端开始读取值时，拥有最新值的服务器不可用，它很可能得到一个旧值。为了避免这种情况，需要跟踪 Quorum 是否同意某项操作，并且只向客户端发送保证在所有服务器上可用的值。在这种情况下使用了 Leader 和 Followers 机制。其中一台服务器被选为 Leader，其他服务器作为 Follower。Leader 控制和协调在 Followers 上的数据复制。Leader 现在需要决定，哪些变化应该对客户端可见。High-Water Mark 用于跟踪 write ahead log 中已知已成功复制到 Quorum 的跟随者的条目。所有到达 high-water mark 标记条目都会对客户端可见。Leader 也会将 high-water mark 传播给 Followers。因此，如果 Leader 失败了，而其中一个 Follower 成为新的 Leader，那么客户端看到的内容就不会有任何不一致。&lt;/p>
+&lt;h3 id="进程暂停">进程暂停
+&lt;/h3>&lt;p>但这还不是全部，即使有 Quorum 和 Leader Followers 机制，也有一个棘手的问题需要解决。Leader 进程可以任意暂停。一个进程可以暂停的原因有很多。对于支持垃圾回收的语言来说，可能会有一个很长的垃圾回收暂停。一个有长时间垃圾回收暂停的 Leader，可能与 Followers 断开连接，在暂停结束后会继续向跟随者发送消息。同时，由于追随者没有收到 Leader 的心跳，他们可能已经选出了新的 Leader，并接受了客户端的（数据）更新。如果照原样处理旧 Leader 的请求，可能会覆盖一些（数据）更新。所以我们需要一个机制来检测来自过时的 Leader 的请求。Generation Clock用于标记和检测来自过时 Leader 的请求。通常是（维护）一个单调递增的数字。&lt;/p>
+&lt;h3 id="时钟不同步及事件排序">时钟不同步及事件排序
+&lt;/h3>&lt;p>从新的 Leader 消息中检测出老的 Leader 消息的问题，是维持消息排序的问题。看起来我们可以使用系统时间戳来对一组消息进行排序，但是我们不能这样做。不能使用系统时钟的主要原因是，跨服务器的系统时钟不能保证同步。计算机中的时钟是由石英晶体管理的，根据晶体的振荡来测量时间。&lt;/p>
+&lt;p>这种机制很容易出错，因为晶体的振荡速度可能快一些，也可能慢一些，所以不同的服务器的时间可能大相径庭。一组服务器上的时钟是由一个叫做 NTP 的服务来同步的。这个服务会定期检查一组服务器的全局时间，并据此调整计算机时钟。&lt;/p>
+&lt;p>因为这发生在网络上的通信，而网络延迟可能会像上面的章节所讨论的那样有所不同，时钟同步可能会因为网络问题而产生延迟。这可能会导致服务器时钟相互漂移，在 NTP 同步发生后，甚至会在时间上后移。由于计算机时钟的这些问题，一般不使用一天中的具体时间来排序事件。取而代之的是一种叫做 Lamport 时间戳的简单技术。Generation Clock 就是一个例子。&lt;/p>
+&lt;h2 id="整合起来---分布式系统示例">整合起来 - 分布式系统示例
+&lt;/h2>&lt;p>我们可以看到，理解这些模式，有助于我们从基础上建立一个完整的系统。我们以共识的实现为例。分布式共识是分布式系统实现的一个特例，它能提供最强的一致性保证。在流行的企业系统中常见的例子有，Zookeeper，etcd 和 Consul。它们实现了 zab 和 Raft 等共识算法，提供了复制和强一致性。还有其他流行的算法来实现共识，Google 的 Chubby 锁定服务中使用的 Paxos，Viewstamped Replication 和 Virtual Synchrony。简单来说，共识是指一组服务器就存储的数据、数据的存储顺序以及什么时候让这些数据对客户端可见达成一致。&lt;/p>
+&lt;h3 id="实现共识的模式序列">实现共识的模式序列
+&lt;/h3>&lt;p>共识实现采用状态机复制来实现容错。在状态机复制中，存储服务，如键值存储，被复制在所有服务器上，用户的输入在每个服务器上以相同的顺序执行。实现这一目标的关键实现技术是在所有服务器上复制 Write-Ahead Log，以拥有一个 &amp;ldquo;Replicated Wal&amp;rdquo;。&lt;/p>
+&lt;p>我们可以把实现 Replicated Wal 的模式组合如下。&lt;/p>
+&lt;p>为了提供耐久性保证，使用 Write-Ahead Log。使用 Segmented Log 将 Write Ahead Log 分成多个片段。这有助于日志清理，而日志清理由 Low-Water Mark 处理。通过在多个服务器上复制 Write-Ahead Log 来提供容错。服务器之间的复制是通过使用 Leader 和 Followers 来管理的。Quorum 用于更新 High-Water Mark，以决定哪些值对客户端可见。通过使用 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/singular-update-queue.html" target="_blank" rel="noopener"
+>Singular Update Queue&lt;/a>，所有的请求都以严格的顺序进行处理。在使用 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html" target="_blank" rel="noopener"
+>Single Socket Channel&lt;/a> 从 Leader 向 Followers 发送请求时，顺序是保持的。为了优化 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html" target="_blank" rel="noopener"
+>Single Socket Channel&lt;/a> 的吞吐量和延迟，使用了 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/request-pipeline.html" target="_blank" rel="noopener"
+>Request Pipeline&lt;/a>。Followers 通过从 Leader 收到的心跳检测了解 Leader 的可用性。如果 Leader 因为网络分区而暂时与集群断开连接，则会通过使用 &lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html" target="_blank" rel="noopener"
+>Generation Clock&lt;/a> 来检测。&lt;/p>
+&lt;p>&lt;img src="https://andornot.xyz/posts/patterns-of-distributed-systems/Replicated-WAL.png"
+width="1465"
+height="913"
+srcset="https://andornot.xyz/posts/patterns-of-distributed-systems/Replicated-WAL_hu_2c9b478df3e0ae57.png 480w, https://andornot.xyz/posts/patterns-of-distributed-systems/Replicated-WAL_hu_5f2c61fccf842721.png 1024w"
+loading="lazy"
+alt="Replicated WAL"
+class="gallery-image"
+data-flex-grow="160"
+data-flex-basis="385px"
+>&lt;/p>
+&lt;p>这样，从一般形式上理解问题以及其通用的解决方案，有助于理解构建一个完整的系统。&lt;/p>
+&lt;h2 id="下一步">下一步
+&lt;/h2>&lt;p>分布式系统是一个庞大的话题。这里涉及的一些模式只是一小部分，涵盖了不同的类别，以展示模式方法如何帮助理解和设计分布式系统。我将不断增加模式的内容，大致包括以下几类在任何分布式系统中解决的问题。&lt;/p>
+&lt;ol>
+&lt;li>集群成员和故障检测&lt;/li>
+&lt;li>分区&lt;/li>
+&lt;li>复制和一致性&lt;/li>
+&lt;li>存储&lt;/li>
+&lt;li>处理&lt;/li>
+&lt;/ol></description></item></channel></rss>
