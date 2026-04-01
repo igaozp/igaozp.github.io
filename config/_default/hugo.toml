@@ -1,0 +1,20 @@
+baseURL      = "https://andornot.xyz"
+languageCode = "en-us"
+title        = "AND OR NOT"
+theme        = "hugo-theme-stack"
+
+defaultContentLanguage = "zh-cn"
+hasCJKLanguage         = true
+
+[pagination]
+    pagerSize = 5
+
+[permalinks]
+    post = "/p/:slug/"
+    page = "/:slug/"
+
+[services.disqus]
+    shortname = "andornot-xyz"
+
+[services.googleAnalytics]
+    id = "G-XCEK8PL0RD"
