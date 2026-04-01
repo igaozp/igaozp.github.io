@@ -1,4 +1,4 @@
-# AND OR NOT
+# The Third Gate 待定之地
 
 Personal blog built with [Hugo](https://gohugo.io/) and [hugo-theme-stack](https://github.com/CaiJimmy/hugo-theme-stack/), deployed at [andornot.xyz](https://andornot.xyz).
 
