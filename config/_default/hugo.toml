@@ -1,6 +1,6 @@
 baseURL      = "https://andornot.xyz"
 languageCode = "en-us"
-title        = "AND OR NOT"
+title        = "The Third Gate"
 theme        = "hugo-theme-stack"
 
 defaultContentLanguage = "zh-cn"
