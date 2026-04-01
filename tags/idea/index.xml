@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>IDEA on The Third Gate 待定之地</title><link>https://andornot.xyz/tags/idea/</link><description>Recent content in IDEA on The Third Gate 待定之地</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 07 Jul 2021 20:53:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/idea/index.xml" rel="self" type="application/rss+xml"/><item><title>IDEA 编译大项目报错问题解决</title><link>https://andornot.xyz/posts/idea-java-compile-error-fix/</link><pubDate>Wed, 07 Jul 2021 20:53:10 +0800</pubDate><guid>https://andornot.xyz/posts/idea-java-compile-error-fix/</guid><description>&lt;p&gt;最近使用 IDEA 启动 Java 项目时发现在编译阶段出现如下的错误：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;java.lang.OutOfMemoryError: GC overhead limit exceeded&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;java.lang.InternalError&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;java.lang.OutOfMemoryError: Java heap space&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;出现上述的错误，通常在项目工程比较大的时候才会出现。此时只需要调整 IDEA 的设置，
+将 &lt;strong&gt;File | Settings | Build, Execution, Deployment | Compiler&lt;/strong&gt; 中的
+&lt;strong&gt;Shared build process heap size(Mbytes)&lt;/strong&gt; 配置的阈值适当提高，问题通常便会解决。&lt;/p&gt;</description></item></channel></rss>

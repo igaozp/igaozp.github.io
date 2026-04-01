@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Npm on The Third Gate 待定之地</title><link>https://andornot.xyz/tags/npm/</link><description>Recent content in Npm on The Third Gate 待定之地</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 13 Mar 2021 22:36:10 +0800</lastBuildDate><atom:link href="https://andornot.xyz/tags/npm/index.xml" rel="self" type="application/rss+xml"/><item><title>npm 修改 registry 配置提高下载速度</title><link>https://andornot.xyz/posts/npm-config-registry/</link><pubDate>Sat, 13 Mar 2021 22:36:10 +0800</pubDate><guid>https://andornot.xyz/posts/npm-config-registry/</guid><description>&lt;p&gt;使用如下命令修改全局配置，使用淘宝镜像加速 npm 的下载速度&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;npm config &lt;span class="nb"&gt;set&lt;/span&gt; registry https://registry.npm.taobao.org
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
